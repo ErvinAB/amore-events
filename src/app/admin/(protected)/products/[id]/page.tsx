@@ -9,6 +9,8 @@ import { FormMessage } from "@/components/ui/field";
 import { ProductForm } from "../product-form";
 import { loadCategoryOptions, loadCurrency } from "../data";
 import { ImageManager } from "./image-manager";
+import { PersonalizationEditor } from "./personalization-editor";
+import type { PersonalizationField } from "@/lib/personalization/validate";
 
 export const metadata = { title: adminT.products.edit };
 
@@ -22,7 +24,7 @@ export default async function EditProductPage({ params, searchParams }: PageProp
     supabase
       .from("products")
       .select(
-        "id, slug, name, short_description, description, price_minor, sale_price_minor, sku, stock, status, is_featured, is_new, product_categories(category_id), product_images(id, storage_path, alt_text, sort_order)",
+        "id, slug, name, short_description, description, price_minor, sale_price_minor, sku, stock, status, is_featured, is_new, product_categories(category_id), product_images(id, storage_path, alt_text, sort_order), personalization_fields(id, label, type, required, placeholder, help_text, max_length, options, sort_order)",
       )
       .eq("id", id)
       .maybeSingle(),
@@ -71,6 +73,13 @@ export default async function EditProductPage({ params, searchParams }: PageProp
           images={[...p.product_images]
             .sort((a, b) => a.sort_order - b.sort_order)
             .map((i) => ({ id: i.id, storage_path: i.storage_path, alt_text: i.alt_text as LocalizedText | null }))}
+        />
+      </section>
+      <section id="personalisation" className="flex max-w-3xl flex-col gap-4 rounded-control border border-line bg-paper p-4 sm:p-6">
+        <h2 className="heading-3">{adminT.personalisation.title}</h2>
+        <PersonalizationEditor
+          productId={p.id}
+          fields={([...p.personalization_fields] as unknown as PersonalizationField[]).sort((a, b) => a.sort_order - b.sort_order)}
         />
       </section>
     </div>

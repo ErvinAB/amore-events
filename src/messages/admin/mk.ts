@@ -165,6 +165,13 @@ export const adminMk = {
     empty: "Нема полиња за персонализација.",
     saveField: "Зачувај поле",
     optionsRequired: "Додадете барем една опција.",
+    optionsTooMany: "Најмногу 50 опции.",
+    optionValueInvalid: "Код: латински мали букви, бројки, - или _ (пр. rose-gold). Секој код мора да е различен.",
+    optionValueHelp: "Внатрешен код, не се прикажува на купувачите.",
+    maxLengthInvalid: "Внесете број од 1 до 500.",
+    maxLengthHelp: "Оставете празно за стандардно ({default}).",
+    newField: "Ново поле",
+    preview: "Вака ќе изгледа во продавницата",
   },
   orders: {
     title: "Нарачки",
