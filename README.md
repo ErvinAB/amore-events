@@ -29,4 +29,39 @@ npm run dev                  # http://localhost:3000 → redirects to /en
 | `npm run typecheck` | Generate route types + `tsc --noEmit` |
 | `npm test` | Unit tests (vitest) |
 
-Database commands are documented in the "Database" section once migrations land.
+| `npm run test:integration` | Storage policy tests (local Supabase) |
+| `npm run db:test` | Database RLS/constraint tests (pgTAP) |
+| `npm run db:advisors` | Supabase security/performance advisors |
+
+## Database
+
+Schema, RLS, grants and Storage policies live in `supabase/migrations/` and nothing is changed by hand in the dashboard.
+
+**Local development** (needs Docker):
+
+```bash
+npx supabase start            # applies migrations; prints local URL + keys
+cp .env.example .env.local    # paste the local URL, publishable and secret keys
+npm run db:types              # regenerate TypeScript types after schema changes
+```
+
+**Cloud project** (Free for development, Pro before launch):
+
+```bash
+npx supabase login
+npx supabase link --project-ref <ref>
+npx supabase db push          # applies migrations to the linked project
+```
+
+Then in the Supabase dashboard: **Authentication → Sign In / Providers → turn off "Allow new users to sign up"** (the local config already does this).
+
+## Creating an admin
+
+Public sign-up is disabled. Being signed in is not enough: admins are users listed in `admin_users`.
+
+```bash
+node --env-file=.env.local scripts/create-admin.mjs owner@example.com          # prompts for a password
+node --env-file=.env.local scripts/create-admin.mjs helper@example.com staff
+```
+
+Then sign in at `/admin/login`.

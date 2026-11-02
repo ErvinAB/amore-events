@@ -1,6 +1,6 @@
 # Project Plan — Gift Store (working name, brand TBC)
 
-Status: **Phase 0 approved (2026-11-03). V0.1 in progress.**
+Status: **V0.1 complete (2026-11-03), awaiting review. V0.2 not started.**
 Last updated: 2026-11-03
 
 ---
@@ -70,11 +70,11 @@ Browser ──► Next.js (Vercel)
 - **Catalogue reads** use a cookie-less Supabase client with the publishable key, wrapped in `'use cache'` + `cacheTag('catalog')`. Pages become static/prerendered and fast for social-media traffic. Admin mutations call `updateTag('catalog')`. If Cache Components causes friction, the fallback is plain dynamic rendering plus `revalidatePath`.
 - **Admin pages** are dynamic and use the cookie-based server client, so RLS sees the admin's JWT.
 - **Checkout** (V0.2) is a Server Action, the only boundary the browser talks to. It runs: Zod validation → honeypot and form-timing check → IP and phone rate limits plus duplicate detection → `place_order()` via the **server-only secret-key client** (one transaction) → after commit, owner email (best effort) → sanitized confirmation. The browser never calls the database function directly; anon/authenticated have no EXECUTE on it.
-- **Libraries (V0.1):** next, react, tailwindcss, @supabase/ssr, @supabase/supabase-js, next-intl, zod, server-only. Dev: typescript, eslint, vitest, @playwright/test, supabase (CLI). Nothing else until needed.
+- **Libraries (V0.1):** next, react, tailwindcss, @supabase/ssr, @supabase/supabase-js, zod, server-only. Dev: typescript, eslint, vitest, @playwright/test, supabase (CLI). Nothing else until needed.
 
 ### 2a. Internationalisation (decided 2026-11-03)
 
-- **Locales:** `en` (**default and canonical**), `mk`, `sq`. Library: **next-intl**. One `src/i18n/routing.ts` defines `locales` and `defaultLocale = 'en'`. Navigation, metadata, redirects, fallback, sitemap, Open Graph and canonical URLs all read from it, and nothing else may assume a default.
+- **Locales:** `en` (**default and canonical**), `mk`, `sq`. **Implementation (changed in V0.1):** Next's built-in pattern (`app/[locale]` root segment, `next/root-params`, JSON dictionaries), not next-intl. It needs no dependency and is built for Cache Components, which are on by default in Next 16.4. One `src/i18n/routing.ts` defines `locales` and `defaultLocale = 'en'`. Navigation, metadata, redirects, fallback, sitemap, Open Graph and canonical URLs all read from it, and nothing else may assume a default.
 - **Routing:** every storefront URL is prefixed: `/en/…`, `/mk/…`, `/sq/…`. Bare `/` and unprefixed paths redirect: saved locale cookie → `Accept-Language` → `en`. `/admin` is **not** localised.
 - **SEO:** each page's canonical is its own locale URL. `alternates.languages` lists en/mk/sq plus `x-default` → `/en/…`. The sitemap emits every locale URL with alternates. `og:locale` is per page (`en_US`, `mk_MK`, `sq_AL`).
 - **One stable Latin slug per product/category**, shared across all locale routes.
@@ -83,7 +83,7 @@ Browser ──► Next.js (Vercel)
 - **Orders** store `locale`. `order_items.product_name` is a `jsonb` snapshot of all translations.
 - **Fonts** must cover Cyrillic and Latin Extended (Albanian ë, ç): *Literata* (display) + *Onest* (UI), both via `next/font`.
 - **Strings:** storefront in `src/messages/{en,mk,sq}.json` (next-intl), with `en` the complete source and others falling back to `en`. Admin strings are a separate module (D4b).
-- **Money:** `formatMoney(minor, { currency, locale })` uses `Intl.NumberFormat` with the *display* locale and the *store* currency. Never hard-code "ден." or a symbol.
+- **Money:** `formatMoney(minor, { currency, locale })` takes the *display* locale and the *store* currency. **It does not use `Intl.NumberFormat`.** Chrome ships without Macedonian/Albanian number data and silently falls back to English, so server and browser printed different prices. The formatter is deterministic and follows CLDR conventions (`MKD 1,290.50` / `1.290,50 ден.` / `1290,50 den`). Never hard-code a symbol in components.
 
 ---
 
@@ -333,6 +333,36 @@ npx skills add supabase/agent-skills --skill supabase-postgres-best-practices -a
 V0.1 increments (one commit each): ① scaffold + tokens + CLAUDE.md ② migrations + RLS + seed ③ Supabase clients + proxy + admin login + `requireAdmin` ④ categories admin ⑤ products admin (core fields) ⑥ image manager ⑦ personalisation field editor ⑧ storefront shop/category/product ⑨ add-to-bag store ⑩ tests + visual pass.
 
 ---
+
+## 13a. V0.1 progress log
+
+| Step | Status | Notes |
+|---|---|---|
+| ① Scaffold | ✅ | Next 16.4.4, React 19.3, Tailwind 4, Cache Components on. Install needs **npm 11** (npm 10.9 has a peer-dependency bug with vitest 5). |
+| ② Design tokens + type | ✅ | Revised from Phase 0 to avoid the cream/claret/serif default look: "tissue and ribbon" (white, blush `#F5EEEC`, plum `#4B2142`), Spectral + Onest (Cyrillic + Latin Ext). **Provisional.** |
+| ③ Locale routing | ✅ | `/en` default; proxy redirects unprefixed paths (cookie → Accept-Language → en). Per-key fallback to English. |
+| ④ Supabase clients | ✅ | Browser, cookie-server, cookie-less public, server-only secret. **All use `no-store` fetch** (see findings). |
+| ⑤ Migrations | ✅ | 3 migrations; applied cleanly to local Postgres 17. |
+| ⑥ RLS/auth | ✅ | 24 pgTAP tests + 6 Storage integration tests. Supabase advisors: no issues. |
+| ⑦ Admin shell | ✅ | Macedonian, strings in `src/messages/admin/mk.ts`. |
+| ⑧ Categories | ✅ | Create/edit/delete, translations, slug autofill. |
+| ⑨ Products | ✅ | Price in MKD with comma decimals, sale price, SKU, stock, status, featured, new, categories. |
+| ⑩ Images | ✅ | Direct-to-Storage upload, browser downscale to ≤2000px WebP, reorder, main, alt text, delete. |
+| ⑪ Personalisation | ✅ | Text/textarea/select/date; one shared validator; admin editor. |
+| ⑫ Storefront | ✅ | Home (simple, pending photos), shop, category, product, 404s, hreflang/canonical. |
+| ⑬ Add to cart | ✅ | localStorage `cart:v1`, distinct lines per engraving, minimal bag page. |
+
+**Findings during V0.1 that changed the implementation**
+1. **Supabase Data API no longer auto-exposes tables** (enforced 2026-10-30), so migrations grant table privileges explicitly per role.
+2. **Next fetch cache persisted Supabase responses across builds.** A fresh build prerendered stale prices. Fix: every Supabase client uses `cache: 'no-store'`; caching happens only via tagged `'use cache'`. Verified with a production build after a direct DB change.
+3. **Chrome lacks mk/sq Intl data**, so the money formatter is now deterministic (see §2a).
+4. **404 status with streaming:** a `loading.tsx` on product/category pages forces a 200 "soft 404". Those routes block (`instant = false`) so missing, draft or archived items return a real 404.
+
+**Known issues to revisit (not blocking)**
+- The *first* request for a never-seen bad product URL returns 200 + `noindex` + the not-found page. Later requests return a cached 404. → V1 SEO pass.
+- After an admin edit, a prerendered product page can serve the previous version **once** while it regenerates. Later requests are fresh. There is no money risk because checkout (V0.2) recalculates server-side. → V0.4 caching review.
+- Macedonian/Albanian UI strings are **drafts** and need native review.
+- The admin dashboard has no order metrics until V0.3.
 
 ## 14. Risks and things deliberately NOT built
 

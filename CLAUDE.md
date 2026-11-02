@@ -6,10 +6,11 @@ Production e-commerce store for a small personalised-gift business. Real custome
 Next.js 16 (App Router, TypeScript strict, Turbopack) · Tailwind v4 · Supabase (Postgres, Auth, Storage) · Zod · Vercel. One app: no separate API, no Redux, no ORM.
 
 ## Commands
-(fill in once scaffolded)
+Use **npm 11+** (`npx npm@11 install` on older npm).
 - `npm run dev` · `npm run build` · `npm run lint` · `npm run typecheck`
-- `npm test` (vitest) · `npm run test:e2e` (playwright) · `npx supabase test db` (pgTAP, needs Docker)
-- `npx supabase migration new <name>` · `npx supabase db push`
+- `npm test` (vitest unit) · `npm run test:integration` (needs local Supabase) · `npm run db:test` (pgTAP) · `npm run db:advisors`
+- `npx supabase start` (Docker) · `npx supabase migration new <name>` · `npm run db:types`
+- Create an admin: `node --env-file=.env.local scripts/create-admin.mjs <email>`
 
 ## Hard rules
 - **Payment is Cash on Delivery only.** No Stripe, no card fields, no payment abstractions. New orders are `cash_on_delivery` / `unpaid` / `new`. Paid is only ever set by an admin.
@@ -36,8 +37,12 @@ Next.js 16 (App Router, TypeScript strict, Turbopack) · Tailwind v4 · Supabase
 - All schema/RLS/storage changes go through `supabase/migrations/`. No dashboard-only changes.
 
 ## Conventions
-- Server Components by default; `'use client'` only for interactivity (gallery, cart, forms).
-- Catalogue reads: cookie-less public client + `'use cache'` + `cacheTag('catalog')`. Admin mutations call `updateTag('catalog')`.
+- Server Components by default; `'use client'` only for interactivity (gallery, cart, forms). Never pass functions from Server to Client Components.
+- Catalogue reads: `src/lib/catalog/queries.ts` (cookie-less public client + `'use cache'` + `cacheTag(CATALOG_TAG)`). Admin mutations call `updateTag(CATALOG_TAG)`.
+- Supabase clients must keep `global.fetch = noStoreFetch`. Next's fetch cache must never store Supabase responses.
+- Admin pages: `requireAdmin()` + `export const instant = false`. Admin forms use `useActionForm` (no reset on error, focuses the first invalid field).
+- Money display: `formatMoney(minor, { currency, locale })`, deterministic, never `Intl` (browsers lack mk/sq data).
+- Product/category pages block (`instant = false`, no `loading.tsx`) so missing items get a real 404.
 - Next 16: `await params`, `await cookies()`. Use `proxy.ts`, not `middleware.ts`.
 - Design tokens are in `src/app/globals.css` `@theme`. No arbitrary hex/px values in components.
 - Storefront copy is warm and customer-facing. Admin copy is plain and efficient.
