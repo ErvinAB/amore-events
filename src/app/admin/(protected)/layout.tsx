@@ -57,3 +57,6 @@ async function SignedInAs() {
     </div>
   );
 }
+
+// Admin pages are request-time (auth); they intentionally block navigation.
+export const instant = false;

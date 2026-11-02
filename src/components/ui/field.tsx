@@ -88,7 +88,7 @@ export function Checkbox({ label, id, hint, ...props }: ComponentProps<"input"> 
 export function FormMessage({ tone, children }: { tone: "error" | "success"; children: ReactNode }) {
   const cls = tone === "error" ? "border-error/30 bg-error-tint text-error" : "border-success/30 bg-success-tint text-success";
   return (
-    <p role={tone === "error" ? "alert" : "status"} className={`rounded-control border px-4 py-3 text-sm ${cls}`}>
+    <p role={tone === "error" ? "alert" : "status"} tabIndex={-1} className={`rounded-control border px-4 py-3 text-sm ${cls}`}>
       {children}
     </p>
   );

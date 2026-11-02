@@ -44,3 +44,6 @@ export default async function AdminDashboard() {
     </div>
   );
 }
+
+// Admin pages are request-time (auth); they intentionally block navigation.
+export const instant = false;
