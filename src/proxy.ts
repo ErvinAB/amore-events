@@ -1,13 +1,22 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isLocale, localeCookie } from "@/i18n/config";
 import { negotiateLocale } from "@/i18n/negotiate";
+import { redirectKeepingCookies, updateAdminSession } from "@/lib/supabase/proxy-session";
 
 export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  // Admin is not localised; auth handling is added with the admin shell.
+  // Admin (not localised). Refresh the session; bounce signed-out users to
+  // the login page. This is a convenience only — requireAdmin() and RLS are
+  // the real security boundary.
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
-    return NextResponse.next();
+    const { response, signedIn } = await updateAdminSession(request);
+    const isLogin = pathname === "/admin/login";
+    if (!signedIn && !isLogin) {
+      return redirectKeepingCookies(response, new URL("/admin/login", request.url));
+    }
+    response.headers.set("x-robots-tag", "noindex, nofollow");
+    return response;
   }
 
   const first = pathname.split("/")[1];
@@ -22,6 +31,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip Next internals, API-like files and anything with a file extension.
-  matcher: ["/((?!_next/|api/|.*\\..*).*)"],
+  // Skip Next internals and anything with a file extension.
+  matcher: ["/((?!_next/|.*\\..*).*)"],
 };
