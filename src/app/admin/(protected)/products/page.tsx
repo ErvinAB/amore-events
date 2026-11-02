@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { adminIntlLocale, adminT } from "@/messages/admin";
+import { adminMoneyLocale, adminT } from "@/messages/admin";
 import { ButtonLink } from "@/components/ui/button";
 import { localized, type LocalizedText } from "@/i18n/config";
 import { formatMoney } from "@/lib/money";
@@ -73,7 +73,7 @@ export default async function ProductsPage({ searchParams }: PageProps<"/admin/p
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-medium">{localized(p.name as LocalizedText, "en")}</span>
                     <span className="block text-sm text-ink-muted">
-                      {formatMoney(p.sale_price_minor ?? p.price_minor, { currency, locale: adminIntlLocale })} · {t.stock}:{" "}
+                      {formatMoney(p.sale_price_minor ?? p.price_minor, { currency, locale: adminMoneyLocale })} · {t.stock}:{" "}
                       <span className={p.stock <= LOW_STOCK ? "font-medium text-warning" : ""}>{p.stock}</span>
                     </span>
                   </span>

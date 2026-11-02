@@ -1,21 +1,31 @@
 import { describe, expect, it } from "vitest";
 import { effectivePrice, formatMoney } from "@/lib/money";
 
+const nb = (s: string) => s.replace(/ /g, " ");
+
 describe("formatMoney()", () => {
-  it("formats MKD in the English storefront without hardcoded symbols", () => {
-    const s = formatMoney(120000, { currency: "MKD", locale: "en-GB" });
-    expect(s).toContain("1,200");
-    expect(s).toMatch(/MKD|ден/);
+  it("English storefront still shows the store currency (MKD)", () => {
+    expect(nb(formatMoney(129050, { currency: "MKD", locale: "en" }))).toBe("MKD 1,290.50");
+    expect(nb(formatMoney(258100, { currency: "MKD", locale: "en" }))).toBe("MKD 2,581");
   });
-  it("uses Macedonian number formatting for the mk locale", () => {
-    const s = formatMoney(120000, { currency: "MKD", locale: "mk-MK" });
-    expect(s).toContain("1.200");
+  it("Macedonian conventions", () => {
+    expect(nb(formatMoney(129050, { currency: "MKD", locale: "mk" }))).toBe("1.290,50 ден.");
+    expect(nb(formatMoney(12000000, { currency: "MKD", locale: "mk" }))).toBe("120.000 ден.");
   });
-  it("keeps decimals when they are not zero", () => {
-    expect(formatMoney(1999, { currency: "EUR", locale: "en-GB" })).toBe("€19.99");
+  it("Albanian conventions (no grouping below 5 digits)", () => {
+    expect(nb(formatMoney(258100, { currency: "MKD", locale: "sq" }))).toBe("2581 den");
+    expect(nb(formatMoney(1258100, { currency: "MKD", locale: "sq" }))).toBe("12 581 den");
   });
-  it("strips .00 on whole amounts", () => {
-    expect(formatMoney(2000, { currency: "EUR", locale: "en-GB" })).toBe("€20");
+  it("is configurable: other currencies work without code changes", () => {
+    expect(formatMoney(1999, { currency: "EUR", locale: "en" })).toBe("€19.99");
+    expect(formatMoney(2000, { currency: "EUR", locale: "en" })).toBe("€20");
+    expect(nb(formatMoney(2000, { currency: "EUR", locale: "mk" }))).toBe("20 €");
+    expect(nb(formatMoney(2000, { currency: "CHF", locale: "en" }))).toBe("CHF 20");
+  });
+  it("is identical regardless of the runtime's Intl data", () => {
+    // Same input must always give the same string (server == browser).
+    expect(formatMoney(5, { currency: "MKD", locale: "mk" })).toBe(formatMoney(5, { currency: "MKD", locale: "mk" }));
+    expect(nb(formatMoney(5, { currency: "MKD", locale: "mk" }))).toBe("0,05 ден.");
   });
 });
 
