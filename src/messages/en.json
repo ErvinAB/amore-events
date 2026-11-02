@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "defaultDescription": "Personalised gifts, jewellery and keepsakes, made with your names, dates and words."
+  },
+  "nav": {
+    "shop": "Shop",
+    "shopAll": "Shop all",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "bag": "Bag",
+    "bagWithCount": "Bag, {count} items",
+    "home": "Home",
+    "language": "Language",
+    "skipToContent": "Skip to content"
+  },
+  "home": {
+    "heroTitle": "Gifts that carry their name",
+    "heroBody": "Jewellery, keepsakes and home pieces, personalised with the names, dates and words that matter to you.",
+    "heroCta": "Browse gifts",
+    "categoriesTitle": "Shop by category",
+    "featuredTitle": "Chosen for gifting",
+    "emptyCatalogue": "New pieces are on their way. Please check back soon."
+  },
+  "shop": {
+    "title": "All gifts",
+    "productCount": "{count} pieces",
+    "productCountOne": "1 piece",
+    "empty": "There’s nothing here yet. Have a look at all gifts instead.",
+    "browseAll": "See all gifts"
+  },
+  "product": {
+    "personalisable": "Personalisable",
+    "new": "New",
+    "sale": "Sale",
+    "was": "Was {price}",
+    "inStock": "In stock",
+    "lowStock": "Only {count} left",
+    "outOfStock": "Sold out",
+    "quantity": "Quantity",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "addToBag": "Add to bag",
+    "adding": "Adding…",
+    "added": "Added to your bag",
+    "viewBag": "View bag",
+    "unavailable": "This piece is sold out at the moment.",
+    "description": "Details",
+    "deliveryTitle": "Delivery",
+    "codTitle": "Pay when it arrives",
+    "codBody": "Cash on delivery. You pay the courier when your gift is delivered.",
+    "image": "Image {index} of {total}",
+    "notFoundTitle": "We couldn’t find that piece",
+    "notFoundBody": "It may have sold out or been moved. Everything we have is in the shop.",
+    "fixErrors": "Please check the highlighted details before adding to your bag."
+  },
+  "personalise": {
+    "title": "Make it yours",
+    "intro": "Add a name, date or message that means something to them.",
+    "previewLabel": "Your words",
+    "optional": "optional",
+    "charsLeft": "{count} characters left",
+    "choose": "Choose…",
+    "errors": {
+      "required": "Please fill this in.",
+      "tooLong": "Please keep this to {max} characters.",
+      "invalidOption": "Please choose one of the options.",
+      "invalidDate": "Please enter a valid date."
+    }
+  },
+  "bag": {
+    "title": "Your bag",
+    "empty": "Your bag is empty.",
+    "continue": "Continue shopping",
+    "remove": "Remove",
+    "items": "{count} items"
+  },
+  "footer": {
+    "contact": "Contact",
+    "about": "About",
+    "delivery": "Delivery",
+    "returns": "Returns",
+    "privacy": "Privacy",
+    "terms": "Terms of sale",
+    "cod": "Cash on delivery"
+  },
+  "errors": {
+    "notFoundTitle": "This page isn’t here",
+    "notFoundBody": "The link may be old. Our gifts are all in the shop.",
+    "genericTitle": "Something went wrong",
+    "genericBody": "Please try again. If it keeps happening, contact us and we’ll help.",
+    "retry": "Try again"
+  }
+}

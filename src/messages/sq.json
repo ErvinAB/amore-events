@@ -1,0 +1,94 @@
+{
+  "_note": "DRAFT translation — needs review by a native speaker before launch. Missing keys fall back to English.",
+  "meta": {
+    "defaultDescription": "Dhurata të personalizuara, bizhuteri dhe kujtime, me emrat, datat dhe fjalët tuaja."
+  },
+  "nav": {
+    "shop": "Dyqani",
+    "shopAll": "Të gjitha",
+    "menu": "Menyja",
+    "closeMenu": "Mbyll menynë",
+    "bag": "Shporta",
+    "bagWithCount": "Shporta, {count} artikuj",
+    "home": "Kreu",
+    "language": "Gjuha",
+    "skipToContent": "Kalo te përmbajtja"
+  },
+  "home": {
+    "heroTitle": "Dhurata që mbajnë emrin e tyre",
+    "heroBody": "Bizhuteri, kujtime dhe sende për shtëpinë, të personalizuara me emrat, datat dhe fjalët që kanë rëndësi për ju.",
+    "heroCta": "Shiko dhuratat",
+    "categoriesTitle": "Kategoritë",
+    "featuredTitle": "Të zgjedhura për dhuratë",
+    "emptyCatalogue": "Së shpejti vijnë produkte të reja."
+  },
+  "shop": {
+    "title": "Të gjitha dhuratat",
+    "productCount": "{count} produkte",
+    "productCountOne": "1 produkt",
+    "empty": "Ende nuk ka asgjë këtu. Shikoni të gjitha dhuratat.",
+    "browseAll": "Shiko të gjitha dhuratat"
+  },
+  "product": {
+    "personalisable": "I personalizueshëm",
+    "new": "E re",
+    "sale": "Ulje",
+    "was": "Më parë {price}",
+    "inStock": "Në gjendje",
+    "lowStock": "Vetëm {count} të mbetura",
+    "outOfStock": "I shitur",
+    "quantity": "Sasia",
+    "decrease": "Zvogëlo sasinë",
+    "increase": "Rrit sasinë",
+    "addToBag": "Shto në shportë",
+    "adding": "Po shtohet…",
+    "added": "U shtua në shportë",
+    "viewBag": "Shiko shportën",
+    "unavailable": "Ky produkt aktualisht është i shitur.",
+    "description": "Detajet",
+    "deliveryTitle": "Dërgesa",
+    "codTitle": "Paguani kur të arrijë",
+    "codBody": "Pagesë me para në dorë. I paguani korrierit kur të dorëzohet dhurata.",
+    "image": "Fotografia {index} nga {total}",
+    "notFoundTitle": "Nuk e gjetëm këtë produkt",
+    "notFoundBody": "Mund të jetë shitur ose zhvendosur. Gjithçka që kemi është në dyqan.",
+    "fixErrors": "Kontrolloni fushat e shënuara para se ta shtoni në shportë."
+  },
+  "personalise": {
+    "title": "Bëje tëndin",
+    "intro": "Shtoni një emër, datë ose mesazh që ka kuptim për ta.",
+    "previewLabel": "Fjalët tuaja",
+    "optional": "opsionale",
+    "charsLeft": "Edhe {count} shkronja",
+    "choose": "Zgjidhni…",
+    "errors": {
+      "required": "Ju lutemi plotësoni këtë fushë.",
+      "tooLong": "Maksimumi {max} shkronja.",
+      "invalidOption": "Zgjidhni një nga opsionet.",
+      "invalidDate": "Shkruani një datë të vlefshme."
+    }
+  },
+  "bag": {
+    "title": "Shporta juaj",
+    "empty": "Shporta është bosh.",
+    "continue": "Vazhdoni blerjen",
+    "remove": "Hiq",
+    "items": "{count} artikuj"
+  },
+  "footer": {
+    "contact": "Kontakt",
+    "about": "Rreth nesh",
+    "delivery": "Dërgesa",
+    "returns": "Kthimet",
+    "privacy": "Privatësia",
+    "terms": "Kushtet e shitjes",
+    "cod": "Pagesë në dorëzim"
+  },
+  "errors": {
+    "notFoundTitle": "Kjo faqe nuk ekziston",
+    "notFoundBody": "Lidhja mund të jetë e vjetër. Të gjitha dhuratat janë në dyqan.",
+    "genericTitle": "Diçka shkoi keq",
+    "genericBody": "Provoni përsëri. Nëse vazhdon, na kontaktoni.",
+    "retry": "Provo përsëri"
+  }
+}
