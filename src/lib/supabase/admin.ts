@@ -2,6 +2,7 @@ import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { publicEnv } from "@/lib/env";
 import type { Database } from "./database.types";
+import { noStoreFetch } from "./no-store-fetch";
 
 /**
  * SERVER ONLY. Secret-key client that BYPASSES RLS.
@@ -16,5 +17,6 @@ export function createSupabaseSecretClient() {
   }
   return createClient<Database>(publicEnv().NEXT_PUBLIC_SUPABASE_URL, secret, {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+    global: { fetch: noStoreFetch },
   });
 }
