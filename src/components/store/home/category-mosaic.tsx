@@ -14,13 +14,13 @@ export function CategoryMosaic({ categories, locale, title, allLabel }: { catego
   const [lead, ...rest] = categories;
   const tile = (c: CategorySummary, isLead: boolean) => (
     <Link href={localePath(locale, `/category/${c.slug}`)} className="group flex h-full flex-col gap-3 outline-offset-4">
-      <div className={`relative overflow-hidden rounded-image bg-tissue ${isLead ? "aspect-[5/4] lg:aspect-auto lg:min-h-0 lg:flex-1" : "aspect-[4/5] lg:aspect-[5/4]"}`}>
+      <div className={`relative overflow-hidden rounded-image bg-tissue ${isLead ? "aspect-[5/4] md:aspect-auto md:min-h-0 md:flex-1" : "aspect-[4/5] md:aspect-[5/4]"}`}>
         {c.image_path ? (
           <Image
             src={productImageUrl(c.image_path)}
             alt=""
             fill
-            sizes={isLead ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 33vw, 50vw"}
+            sizes={isLead ? "(min-width: 768px) 33vw, 100vw" : "(min-width: 768px) 33vw, 50vw"}
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transition-none"
           />
         ) : null}
@@ -40,8 +40,8 @@ export function CategoryMosaic({ categories, locale, title, allLabel }: { catego
           {allLabel}
         </Link>
       </div>
-      <ul className="grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
-        <li className="col-span-2 lg:col-span-1 lg:row-span-2">{tile(lead, true)}</li>
+      <ul className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 md:gap-x-4 lg:gap-x-6 lg:gap-y-10">
+        <li className="col-span-2 md:col-span-1 md:row-span-2">{tile(lead, true)}</li>
         {rest.map((c) => (
           <li key={c.id}>{tile(c, false)}</li>
         ))}

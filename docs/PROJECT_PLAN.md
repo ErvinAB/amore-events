@@ -1,6 +1,6 @@
 # Project Plan — Gift Store (working name, brand TBC)
 
-Status: **V0.25 Stage D (storefront rollout) done, awaiting review. V0.3 not started.**
+Status: **V0.25 complete (Stages A–E), awaiting owner review. V0.3 not started.**
 Last updated: 2026-11-03
 
 ---

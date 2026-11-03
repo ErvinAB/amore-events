@@ -7,6 +7,7 @@ import { site } from "@/config/site";
 import { BagLink } from "./bag-link";
 import { LanguageSwitcher } from "./language-switcher";
 import { MobileMenu } from "./mobile-menu";
+import { NavLinks } from "./nav-links";
 
 export function Header({
   locale,
@@ -46,15 +47,7 @@ export function Header({
           {site.name}
         </Link>
         <nav aria-label={dict.nav.shop} className="hidden lg:block">
-          <ul className="flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
-            {links.map((l) => (
-              <li key={l.href}>
-                <Link href={l.href} className="flex min-h-touch items-center hover:underline hover:underline-offset-4">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <NavLinks links={links} />
         </nav>
         <div className="-mr-2 flex items-center justify-self-end">
           <LanguageSwitcher current={locale} label={dict.nav.language} className="hidden lg:block" />

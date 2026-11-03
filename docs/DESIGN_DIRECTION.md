@@ -14,7 +14,7 @@ References: Not On The High Street was readable. Tiffany and Monica Vinader retu
 - Show only configured facts (COD, free-delivery threshold, delivery text, phone).
 
 ## Tokens (`src/app/globals.css`)
-ivory `#F7F3ED` (page) · surface `#FFFDF9` · blush `#E9D9D4` (image wells, trust band) · plum `#763F50` · taupe `#B79A7F` · charcoal `#252321` (also the one dark band) · muted `#6B625C` · on-ink `#F7F3ED` / on-ink-muted `#C8BDB4`. Type: Spectral 400 (display 44/72px), Onest UI. Radii: image 4px, control 8px, buttons pill.
+ivory `#F7F3ED` (page) · surface `#FFFDF9` · blush `#E9D9D4` (image wells, trust band) · plum `#763F50` · taupe `#B79A7F` · charcoal `#252321` (also the one dark band) · muted `#615952` · on-ink `#F7F3ED` / on-ink-muted `#C8BDB4`. Type: Spectral 400 (display 44/72px), Onest UI. Radii: image 4px, control 8px, buttons pill.
 
 ## Photography brief (for the owners)
 - **Product:** 4:5, at least 1600×2000, neutral light background (ivory/blush/stone), soft daylight, product filling ~60% of the frame. Shots: front, detail (engraving/texture), scale/in-hand, packaging.
@@ -56,7 +56,7 @@ The owners said the first pass looked flat. With real photos in place, the cause
 | Gifting options on the product page | Personalisation lives there | Baymard product page | Product page ✅ |
 | Obvious search | Visible search field | Baymard homepage | Not built: small catalogue; revisit at ~30+ products |
 | LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1 | Core Web Vitals "good" | web.dev | Hero image is `priority`, sized, no layout shift |
-| Text contrast ≥ 4.5:1 | WCAG 2.2 AA | W3C | Muted 5.5:1 on ivory; on-ink-muted 8.9:1 on charcoal |
+| Text contrast ≥ 4.5:1 | WCAG 2.2 AA | W3C | Muted 6.2:1 on ivory, 5.0:1 on blush; on-ink-muted 8.9:1 on charcoal |
 | Touch targets ≥ 24px (we use 48px) | WCAG 2.5.8 | W3C | Buttons and links `min-h-touch` |
 | Line length 45–75 characters | Readability | Bringhurst | Body copy capped at 40–44ch |
 
@@ -75,7 +75,20 @@ The owners said the first pass looked flat. With real photos in place, the cause
 
 Tests: `tests/e2e/storefront.spec.ts` covers the sticky bar (appears, steps aside, validates) and the current-category chip.
 
+## Stage E: polish (2026-11-03)
+References checked this round: **Lisa Angel**, readable. It confirms category pills, a dedicated "make it theirs" personalised section, and a trust strip up top. Merci Maman and Abbott Lyon returned no readable content, so they weren't inspected.
+
+- **Tablet (768px)** now gets the split layouts: hero, category header, 3-column category mosaic and story. Before, it used the phone layout with a near-full-screen photo.
+- **Motion:** one orchestrated moment, on the homepage hero only. The words rise in (staggered 0/120/240ms), the photo settles from 104% and the gift tag follows. `prefers-reduced-motion` turns it off.
+- **Header:** the current page is marked (`aria-current`, plum underline).
+- **Accessibility and SEO (Lighthouse, dev server):** muted text darkened to `#615952` (it was 4.3:1 on blush, now 5.0:1). Listing headings are in order. Shop and category pages have meta descriptions. Results: home, product and category score **100 / 100 / 100** (accessibility, best practices, SEO). The bag and checkout are intentionally `noindex`.
+- `theme-color` matches the ivory page. Focused fields clear the sticky header (`scroll-margin-top`).
+
+Not done, by choice:
+- Hover-swap to a second photo on cards: doubles image weight per card.
+- An engraving preview mock-up: the brief rules out a fake preview.
+
 ## Status
 - Stage C (homepage) revised after owner feedback (revision 2).
-- Stage D (storefront rollout) done; awaiting review. Stage E (polish) next.
+- Stages D (rollout) and E (polish) done; awaiting owner review.
 - Current imagery is CC0 stock photography (stand-ins); see `public/dev-imagery/CREDITS.md`.

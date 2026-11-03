@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/shop">):
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
-  return { title: dict.shop.title, alternates: localeAlternates(locale, "/shop"), openGraph: openGraphLocale(locale) };
+  return { title: dict.shop.title, description: dict.meta.defaultDescription, alternates: localeAlternates(locale, "/shop"), openGraph: openGraphLocale(locale) };
 }
 
 export default async function ShopPage({ params }: PageProps<"/[locale]/shop">) {

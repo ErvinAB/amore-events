@@ -39,10 +39,10 @@ export function ProductGridPage({
   return (
     <main id="main" className="flex-1">
       <header className="border-b border-line bg-surface">
-        <div className={`mx-auto grid max-w-wide ${imagePath ? "lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]" : ""}`}>
+        <div className={`mx-auto grid max-w-wide ${imagePath ? "md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]" : ""}`}>
           {imagePath ? (
-            <div className="relative aspect-[2/1] bg-tissue lg:order-2 lg:aspect-auto lg:min-h-80">
-              <Image src={productImageUrl(imagePath)} alt="" fill priority sizes="(min-width: 1440px) 785px, (min-width: 1024px) 55vw, 100vw" className="object-cover" />
+            <div className="relative aspect-[2/1] bg-tissue md:order-2 md:aspect-auto md:min-h-72 lg:min-h-80">
+              <Image src={productImageUrl(imagePath)} alt="" fill priority sizes="(min-width: 1440px) 785px, (min-width: 768px) 55vw, 100vw" className="object-cover" />
             </div>
           ) : null}
           <div className="gutter flex flex-col justify-center gap-3 py-10 lg:py-14">
@@ -57,7 +57,11 @@ export function ProductGridPage({
         <CategoryNav categories={categories} locale={locale} current={currentSlug} allLabel={dict.shop.all} label={dict.shop.browseCategories} />
       </div>
 
-      <section className="gutter mx-auto max-w-wide pb-16 lg:pb-24" aria-label={title}>
+      <section className="gutter mx-auto max-w-wide pb-16 lg:pb-24" aria-labelledby="listing-title">
+        {/* Keeps headings in order (h1 → h2 → card h3) without repeating the title visibly. */}
+        <h2 id="listing-title" className="sr-only">
+          {title}: {count}
+        </h2>
         {products.length ? (
           <ProductGrid products={products} locale={locale} dict={dict} currency={settings.currency_code} priorityCount={imagePath ? 0 : 2} />
         ) : (

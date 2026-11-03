@@ -9,9 +9,9 @@ import { homeImagery } from "@/config/home";
 export function PersonalisationStory({ t }: { t: Dictionary["home"] }) {
   return (
     <section className="bg-ink text-on-ink" aria-labelledby="home-story">
-      <div className="gutter mx-auto grid max-w-wide gap-10 py-16 lg:grid-cols-2 lg:items-center lg:gap-20 lg:py-28">
+      <div className="gutter mx-auto grid max-w-wide gap-10 py-16 md:grid-cols-2 md:items-center md:gap-10 lg:gap-20 lg:py-28">
         <div className="relative aspect-[4/3] overflow-hidden rounded-image">
-          <Image src={homeImagery.story.src} alt={t.storyAlt} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
+          <Image src={homeImagery.story.src} alt={t.storyAlt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
         </div>
         <div>
           <h2 id="home-story" className="heading-1">

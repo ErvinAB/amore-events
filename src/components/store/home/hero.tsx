@@ -6,30 +6,31 @@ import { ButtonLink } from "@/components/ui/button";
 import { GiftTag } from "../gift-tag";
 
 /**
- * Split hero. Phones: photo first (4:5), then the words. Desktop: the photo
- * fills the right column edge to edge and sets the hero's height.
+ * Split hero. Phones: photo first (4:5), then the words. Tablet and up: the
+ * photo fills the right column edge to edge and sets the hero's height.
+ * The page's one orchestrated motion: the words rise in, the photo settles.
  */
 export function HomeHero({ locale, t }: { locale: Locale; t: Dictionary["home"] }) {
   return (
-    <section className="mx-auto grid max-w-wide lg:min-h-[min(84svh,52rem)] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-      <div className="relative order-1 aspect-[4/5] bg-tissue lg:order-2 lg:aspect-auto">
+    <section className="mx-auto grid max-w-wide md:min-h-[min(84svh,52rem)] md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+      <div className="relative order-1 aspect-[4/5] overflow-hidden bg-tissue md:order-2 md:aspect-auto">
         <Image
           src={homeImagery.hero.src}
           alt={t.heroAlt}
           fill
           priority
           quality={85}
-          sizes="(min-width: 1440px) 785px, (min-width: 1024px) 55vw, 100vw"
-          className="object-cover"
+          sizes="(min-width: 1440px) 785px, (min-width: 768px) 55vw, 100vw"
+          className="animate-settle object-cover"
         />
-        <div className="absolute bottom-5 left-0 lg:bottom-10">
+        <div className="absolute bottom-5 left-0 animate-rise [animation-delay:500ms] lg:bottom-10">
           <GiftTag>{t.heroTag}</GiftTag>
         </div>
       </div>
-      <div className="gutter order-2 flex flex-col justify-center gap-7 py-12 lg:order-1 lg:py-20 lg:pr-14 lg:pl-8">
-        <h1 className="heading-display max-w-[18ch]">{t.heroTitle}</h1>
-        <p className="max-w-[40ch] text-lg text-ink-muted">{t.heroBody}</p>
-        <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
+      <div className="gutter order-2 flex flex-col justify-center gap-7 py-12 md:order-1 md:py-16 md:pr-10 md:pl-8 lg:py-20 lg:pr-14">
+        <h1 className="heading-display max-w-[18ch] animate-rise">{t.heroTitle}</h1>
+        <p className="max-w-[40ch] animate-rise text-lg text-ink-muted [animation-delay:120ms]">{t.heroBody}</p>
+        <div className="flex animate-rise flex-wrap items-center gap-x-7 gap-y-4 [animation-delay:240ms]">
           <ButtonLink href={localePath(locale, "/shop")}>{t.heroCta}</ButtonLink>
           <a
             href={localePath(locale, "/category/personalised-gifts")}

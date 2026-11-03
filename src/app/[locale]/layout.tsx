@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import "../globals.css";
 import { onest, spectral } from "../fonts";
@@ -15,6 +15,9 @@ import { formatMoney } from "@/lib/money";
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
+
+// Browser chrome matches the ivory page (globals.css --color-paper).
+export const viewport: Viewport = { themeColor: "#f7f3ed" };
 
 export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;

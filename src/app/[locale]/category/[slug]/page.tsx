@@ -15,11 +15,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/[locale]/category/[slug]">): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
-  const category = await getCategoryBySlug(slug);
+  const [category, dict] = await Promise.all([getCategoryBySlug(slug), getDictionary(locale)]);
   if (!category) return {};
   return {
     title: localized(category.name, locale),
-    description: localized(category.description, locale) || undefined,
+    description: localized(category.description, locale) || dict.meta.defaultDescription,
     alternates: localeAlternates(locale, `/category/${category.slug}`),
     openGraph: openGraphLocale(locale),
   };

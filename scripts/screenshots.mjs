@@ -26,7 +26,7 @@ for (const w of widths) {
   }
   for (const p of paths) {
     await page.goto(base + p, { waitUntil: "networkidle" });
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1500); // let the hero entrance finish
     const name = (p.replace(/^\//, "").replace(/[/?=&]+/g, "_") || "root") + `-${w}.jpg`;
     await page.screenshot({ path: path.join(outDir, name), fullPage: true, type: "jpeg", quality: 60 });
     console.log("saved", name);
