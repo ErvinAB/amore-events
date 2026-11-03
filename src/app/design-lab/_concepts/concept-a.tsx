@@ -24,7 +24,7 @@ export function ConceptA({ data }: { data: LabData }) {
 
       <section>
         <div className="relative aspect-[4/5] w-full sm:aspect-[16/8]">
-          <Image src="/dev-imagery/hero-wide.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <Image src="/dev-imagery/hero-tall.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
         </div>
         <div className="mx-auto grid max-w-[90rem] gap-6 px-4 py-10 lg:grid-cols-[1fr_1fr] lg:px-8 lg:py-16">
           <h1 className="font-serif text-[2.6rem] leading-[1.05] font-light tracking-[-0.02em] lg:text-[4.5rem]">

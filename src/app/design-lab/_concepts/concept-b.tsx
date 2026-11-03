@@ -64,7 +64,7 @@ export function ConceptB({ data }: { data: LabData }) {
       {/* Hero: asymmetric split. Mobile: image first, then copy. */}
       <section className="mx-auto grid max-w-[90rem] lg:grid-cols-[5fr_7fr] lg:items-center lg:gap-16 lg:px-8 lg:py-14">
         <div className="relative order-1 aspect-[4/5] lg:order-2 lg:aspect-[6/5]">
-          <Image src="/dev-imagery/hero-wide.jpg" alt="" fill priority sizes="(min-width:1024px) 58vw, 100vw" className="hidden object-cover lg:block lg:rounded-[4px]" />
+          <Image src="/dev-imagery/hero-tall.jpg" alt="" fill priority sizes="(min-width:1024px) 58vw, 100vw" className="hidden object-cover lg:block lg:rounded-[4px]" />
           <Image src="/dev-imagery/hero-tall.jpg" alt="" fill priority sizes="100vw" className="object-cover lg:hidden" />
           <div className="absolute bottom-4 left-4 lg:bottom-8 lg:-left-10">
             <GiftTag>Add a name, a date or a few words</GiftTag>

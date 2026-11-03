@@ -23,7 +23,7 @@ export function ConceptC({ data }: { data: LabData }) {
 
       <section className="mx-auto max-w-[90rem] px-4 pb-14 lg:px-8">
         <div className="relative aspect-[4/5] border-[10px] sm:aspect-[16/7] lg:border-[14px]" style={{ borderColor: C.card }}>
-          <Image src="/dev-imagery/hero-wide.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <Image src="/dev-imagery/hero-tall.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
         </div>
         <div className="mx-auto mt-10 flex max-w-2xl flex-col items-center gap-5 text-center">
           <h1 className="font-serif text-[2.6rem] leading-[1.05] italic lg:text-[4rem]">Small things, made to be kept</h1>
