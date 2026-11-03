@@ -5,7 +5,12 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  partialPrefetching: true,
+  // OFF on purpose. With partial prefetching on, Next 16.4 served a cached
+  // partial prerender for param routes (product pages) without honouring an
+  // expired cache tag, so the first visit after an admin price change showed
+  // the OLD price, and never-seen product URLs returned 200 instead of 404.
+  // Regression coverage: tests/e2e/catalog-freshness.spec.ts.
+  partialPrefetching: false,
   turbopack: {
     rules: {
       "*.css": {

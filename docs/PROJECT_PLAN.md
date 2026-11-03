@@ -1,6 +1,6 @@
 # Project Plan — Gift Store (working name, brand TBC)
 
-Status: **V0.1 complete (2026-11-03), awaiting review. V0.2 not started.**
+Status: **V0.1 approved. Pre-V0.2 stale-data fix done. V0.2 in progress.**
 Last updated: 2026-11-03
 
 ---
@@ -358,10 +358,11 @@ V0.1 increments (one commit each): ① scaffold + tokens + CLAUDE.md ② migrati
 3. **Chrome lacks mk/sq Intl data**, so the money formatter is now deterministic (see §2a).
 4. **404 status with streaming:** a `loading.tsx` on product/category pages forces a 200 "soft 404". Those routes block (`instant = false`) so missing, draft or archived items return a real 404.
 
-**Known issues to revisit (not blocking)**
-- The *first* request for a never-seen bad product URL returns 200 + `noindex` + the not-found page. Later requests return a cached 404. → V1 SEO pass.
-- After an admin edit, a prerendered product page can serve the previous version **once** while it regenerates. Later requests are fresh. There is no money risk because checkout (V0.2) recalculates server-side. → V0.4 caching review.
-- Macedonian/Albanian UI strings are **drafts** and need native review.
+**Known issues / regression notes**
+- ✅ **RESOLVED (2026-11-03): stale price on the first request after an admin edit.** Root cause: `partialPrefetching: true` (scaffold default). Next 16.4 served a cached *partial prerender* (`x-nextjs-postponed: 1`) for param routes, especially pages prerendered at build via `generateStaticParams`, without honouring the expired `catalog` tag. `updateTag()` was already used correctly. Fix: `partialPrefetching: false` in `next.config.ts`, plus `getProductBySlug` deduped per request with React `cache()`. Proven by `tests/e2e/catalog-freshness.spec.ts`, which **fails with the old config (3/5) and passes with the fix (5/5)**: price (EN/MK), shop/category/home cards, stock ("Only N left" → "Sold out"), archive → 404 and removal from listings, reactivation, and a build-prerendered product. **Do not re-enable partial prefetching without re-running this suite.**
+- ✅ **RESOLVED, MUST STAY GREEN BEFORE V1 SEO SIGN-OFF: never-existing product returned 200 + `noindex` on its first request.** Same root cause (the shared App Shell for unknown params). Now a real 404 on the first request in all three locales. Covered by the same e2e suite.
+- **Cache tag strategy:** one `catalog` tag on every storefront read, expired with `updateTag()` (read-your-writes, no stale-while-revalidate) by every admin catalogue mutation. With a small catalogue this invalidates every affected surface (product by slug, listings, categories, featured, new, home) with no risk of a missed per-product tag. Revisit per-product tags only if the catalogue grows enough for full invalidation to cost noticeable render time.
+- Macedonian/Albanian UI strings are **drafts and require native-speaker review**. This doesn't block engineering. English stays the default, required and fallback locale.
 - The admin dashboard has no order metrics until V0.3.
 
 ## 14. Risks and things deliberately NOT built

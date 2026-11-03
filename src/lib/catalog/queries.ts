@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { cacheLife, cacheTag } from "next/cache";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import type { LocalizedText } from "@/i18n/config";
@@ -112,7 +113,7 @@ export async function listProducts(opts: { categoryId?: string; featured?: boole
   return ((data ?? []) as unknown as SummaryRow[]).map(toSummary);
 }
 
-export async function getProductBySlug(slug: string): Promise<ProductDetail | null> {
+async function getProductBySlugCached(slug: string): Promise<ProductDetail | null> {
   "use cache";
   tagged();
   const { data, error } = await createSupabasePublicClient()
@@ -144,6 +145,12 @@ export async function getProductBySlug(slug: string): Promise<ProductDetail | nu
       .map((c) => ({ slug: c.slug, name: c.name })),
   };
 }
+
+/**
+ * One promise per request: generateMetadata and the page share it, so they can
+ * never see two different versions of the product (see PROJECT_PLAN §13a).
+ */
+export const getProductBySlug = cache(getProductBySlugCached);
 
 export async function listActiveProductSlugs(): Promise<string[]> {
   "use cache";

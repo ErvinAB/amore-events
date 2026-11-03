@@ -13,7 +13,8 @@
     "db:types": "supabase gen types --lang typescript --local > src/lib/supabase/database.types.ts",
     "db:test": "supabase test db",
     "db:advisors": "supabase db advisors --fail-on warn",
-    "test:integration": "node --env-file=.env.local ./node_modules/vitest/vitest.mjs run --config vitest.integration.config.mts"
+    "test:integration": "node --env-file=.env.local ./node_modules/vitest/vitest.mjs run --config vitest.integration.config.mts",
+    "test:e2e": "node --env-file=.env.local ./node_modules/@playwright/test/cli.js test"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -25,6 +26,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^22",
     "@types/react": "^19",
