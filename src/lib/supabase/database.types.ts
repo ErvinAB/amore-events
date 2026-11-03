@@ -51,6 +51,60 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"checkout_attempts": {
+                  Row: {
+                    "created_at": string,"id": number,"ip_hash": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: never,"ip_hash": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: never,"ip_hash"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"order_items": {
+                  Row: {
+                    "created_at": string,"id": string,"image_path": string | null,"line_total_minor": number,"order_id": string,"personalization": NonNullable<Json>,"product_id": string | null,"product_name": NonNullable<Json>,"product_slug": string,"quantity": number,"sku": string | null,"unit_price_minor": number,"variant_label": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"image_path"?: string | null,"line_total_minor": number,"order_id": string,"personalization"?: NonNullable<Json>,"product_id"?: string | null,"product_name": NonNullable<Json>,"product_slug": string,"quantity": number,"sku"?: string | null,"unit_price_minor": number,"variant_label"?: string | null
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"image_path"?: string | null,"line_total_minor"?: number,"order_id"?: string,"personalization"?: NonNullable<Json>,"product_id"?: string | null,"product_name"?: NonNullable<Json>,"product_slug"?: string,"quantity"?: number,"sku"?: string | null,"unit_price_minor"?: number,"variant_label"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "order_items_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: false
+      referencedRelation: "orders"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "order_items_product_id_fkey"
+      columns: ["product_id"]
+isOneToOne: false
+      referencedRelation: "products"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"orders": {
+                  Row: {
+                    "cart_fingerprint": string,"city": string,"created_at": string,"currency_code": string,"delivery_fee_minor": number,"delivery_notes": string | null,"email": string | null,"first_name": string,"id": string,"ip_hash": string | null,"last_name": string,"locale": string,"order_notes": string | null,"order_number": string,"owner_notified_at": string | null,"payment_method": Database["public"]['Enums']["payment_method"],"payment_status": Database["public"]['Enums']["payment_status"],"phone": string,"phone_normalized": string,"postal_code": string | null,"status": Database["public"]['Enums']["order_status"],"stock_restored_at": string | null,"street_address": string,"subtotal_minor": number,"total_minor": number,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "cart_fingerprint": string,"city": string,"created_at"?: string,"currency_code": string,"delivery_fee_minor": number,"delivery_notes"?: string | null,"email"?: string | null,"first_name": string,"id"?: string,"ip_hash"?: string | null,"last_name": string,"locale": string,"order_notes"?: string | null,"order_number": string,"owner_notified_at"?: string | null,"payment_method"?: Database["public"]['Enums']["payment_method"],"payment_status"?: Database["public"]['Enums']["payment_status"],"phone": string,"phone_normalized": string,"postal_code"?: string | null,"status"?: Database["public"]['Enums']["order_status"],"stock_restored_at"?: string | null,"street_address": string,"subtotal_minor": number,"total_minor": number,"updated_at"?: string
+                  }
+                  Update: {
+                    "cart_fingerprint"?: string,"city"?: string,"created_at"?: string,"currency_code"?: string,"delivery_fee_minor"?: number,"delivery_notes"?: string | null,"email"?: string | null,"first_name"?: string,"id"?: string,"ip_hash"?: string | null,"last_name"?: string,"locale"?: string,"order_notes"?: string | null,"order_number"?: string,"owner_notified_at"?: string | null,"payment_method"?: Database["public"]['Enums']["payment_method"],"payment_status"?: Database["public"]['Enums']["payment_status"],"phone"?: string,"phone_normalized"?: string,"postal_code"?: string | null,"status"?: Database["public"]['Enums']["order_status"],"stock_restored_at"?: string | null,"street_address"?: string,"subtotal_minor"?: number,"total_minor"?: number,"updated_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"personalization_fields": {
                   Row: {
                     "created_at": string,"help_text": Json | null,"id": string,"label": NonNullable<Json>,"max_length": number | null,"options": Json | null,"placeholder": Json | null,"product_id": string,"required": boolean,"sort_order": number,"type": Database["public"]['Enums']["personalization_field_type"],"updated_at": string
@@ -151,10 +205,18 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            [_ in never]: never
+            "cancel_order":
+{ Args: { "p_order_id": string }; Returns: Json
+                           },
+"place_order":
+{ Args: { "p_customer": Json,"p_ip_hash"?: string,"p_lines": Json,"p_locale": string }; Returns: Json
+                           },
+"register_checkout_attempt":
+{ Args: { "p_ip_hash": string,"p_limit"?: number }; Returns: boolean
+                           }
           }
           Enums: {
-            "personalization_field_type": "text"|"textarea"|"select"|"date","product_status": "draft"|"active"|"archived"
+            "order_status": "new"|"confirmed"|"in_production"|"ready"|"shipped"|"delivered"|"cancelled","payment_method": "cash_on_delivery","payment_status": "unpaid"|"paid"|"cancelled","personalization_field_type": "text"|"textarea"|"select"|"date","product_status": "draft"|"active"|"archived"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -274,7 +336,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "personalization_field_type": ["text", "textarea", "select", "date"],"product_status": ["draft", "active", "archived"]
+            "order_status": ["new", "confirmed", "in_production", "ready", "shipped", "delivered", "cancelled"],"payment_method": ["cash_on_delivery"],"payment_status": ["unpaid", "paid", "cancelled"],"personalization_field_type": ["text", "textarea", "select", "date"],"product_status": ["draft", "active", "archived"]
           }
         }
 } as const

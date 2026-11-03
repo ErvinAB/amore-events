@@ -14,7 +14,8 @@
     "db:test": "supabase test db",
     "db:advisors": "supabase db advisors --fail-on warn",
     "test:integration": "node --env-file=.env.local ./node_modules/vitest/vitest.mjs run --config vitest.integration.config.mts",
-    "test:e2e": "node --env-file=.env.local ./node_modules/@playwright/test/cli.js test"
+    "test:e2e": "node --env-file=.env.local ./node_modules/@playwright/test/cli.js test",
+    "db:seed-dev": "node --env-file=.env.local scripts/seed-dev.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
