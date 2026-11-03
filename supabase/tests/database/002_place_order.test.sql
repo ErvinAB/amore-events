@@ -167,10 +167,10 @@ select public.place_order(pg_temp.cust('+38970100008'), jsonb_build_array(pg_tem
 select throws_ok($$ select public.place_order(pg_temp.cust('+38970100008'), jsonb_build_array(pg_temp.plain(6)), 'en', null) $$,
   'P0001', 'RATE_LIMITED', 'sixth order from the same phone within 24h is refused');
 
--- IP limit: shared IP allows several different people, refuses after 10/hour
-select public.place_order(pg_temp.cust('+3897020000' || n), jsonb_build_array(pg_temp.plain(1)), 'en', repeat('b', 64)) from generate_series(0, 9) n;
+-- IP limit: a shared IP (CGNAT/household) allows many different people, refuses after 30/hour
+select public.place_order(pg_temp.cust('+389702000' || lpad(n::text, 2, '0')), jsonb_build_array(pg_temp.plain(1)), 'en', repeat('b', 64)) from generate_series(0, 29) n;
 select throws_ok($$ select public.place_order(pg_temp.cust('+38970300000'), jsonb_build_array(pg_temp.plain(1)), 'en', repeat('b', 64)) $$,
-  'P0001', 'RATE_LIMITED', 'eleventh order from one IP within an hour is refused (10 different households were fine)');
+  'P0001', 'RATE_LIMITED', '31st order from one IP within an hour is refused (30 different people were fine)');
 
 -- ---------------------------------------------------------------------------
 -- Cancellation restores stock exactly once

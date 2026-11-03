@@ -237,9 +237,9 @@ $$;
 
 -- -----------------------------------------------------------------------------
 -- Per-IP submission throttle (counts every checkout attempt, valid or not).
--- Generous on purpose: families and workplaces share IPs.
+-- Generous on purpose: families, workplaces and mobile carriers (CGNAT) share IPs.
 -- -----------------------------------------------------------------------------
-create function public.register_checkout_attempt(p_ip_hash text, p_limit integer default 30)
+create function public.register_checkout_attempt(p_ip_hash text, p_limit integer default 120)
 returns boolean
 language plpgsql
 set search_path = ''
@@ -287,7 +287,10 @@ as $$
 declare
   c_max_lines constant integer := 50;
   c_phone_daily_limit constant integer := 5;   -- non-cancelled orders per phone per 24h
-  c_ip_hourly_limit constant integer := 10;    -- orders per IP per hour (shared IPs are fine)
+  -- Per-IP limit is deliberately high: mobile carriers use carrier-grade NAT,
+  -- so many unrelated customers can share one public IP. The per-phone limit
+  -- is the meaningful guard.
+  c_ip_hourly_limit constant integer := 30;    -- orders per IP per hour
   c_duplicate_window constant interval := interval '10 minutes';
 
   v_settings public.store_settings%rowtype;
