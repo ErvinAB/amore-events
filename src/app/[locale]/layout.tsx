@@ -10,6 +10,7 @@ import { getCategories } from "@/lib/catalog/queries";
 import { getStoreSettings } from "@/lib/catalog/settings";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
+import { formatMoney } from "@/lib/money";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -36,7 +37,16 @@ export default async function StoreRootLayout({ children, params }: LayoutProps<
   return (
     <html lang={localeMeta[locale].htmlLang} className={`${spectral.variable} ${onest.variable}`}>
       <body className="flex min-h-dvh flex-col">
-        <Header locale={locale} dict={dict} categories={categories} />
+        <Header
+          locale={locale}
+          dict={dict}
+          categories={categories}
+          freeDeliveryFrom={
+            settings.free_delivery_threshold_minor
+              ? formatMoney(settings.free_delivery_threshold_minor, { currency: settings.currency_code, locale })
+              : null
+          }
+        />
         {children}
         <Footer locale={locale} dict={dict} categories={categories} settings={settings} />
       </body>

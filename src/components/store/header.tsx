@@ -7,13 +7,29 @@ import { BagLink } from "./bag-link";
 import { LanguageSwitcher } from "./language-switcher";
 import { MobileMenu } from "./mobile-menu";
 
-export function Header({ locale, dict, categories }: { locale: Locale; dict: Dictionary; categories: CategorySummary[] }) {
+export function Header({
+  locale,
+  dict,
+  categories,
+  freeDeliveryFrom,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+  categories: CategorySummary[];
+  /** Formatted threshold, only when configured. */
+  freeDeliveryFrom?: string | null;
+}) {
   const links = [
     { href: localePath(locale, "/shop"), label: dict.nav.shopAll },
     ...categories.map((c) => ({ href: localePath(locale, `/category/${c.slug}`), label: localized(c.name, locale) })),
   ];
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/85">
+    <>
+    <p className="gutter bg-tissue py-2 text-center text-xs text-ink">
+      {dict.home.announcement}
+      {freeDeliveryFrom ? <span className="hidden sm:inline"> · {dict.home.announcementFree.replace("{amount}", freeDeliveryFrom)}</span> : null}
+    </p>
+    <header className="sticky top-0 z-30 border-b border-line bg-paper">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-control focus:bg-paper focus:px-4 focus:py-2">
         {dict.nav.skipToContent}
       </a>
@@ -45,5 +61,6 @@ export function Header({ locale, dict, categories }: { locale: Locale; dict: Dic
         </div>
       </div>
     </header>
+    </>
   );
 }

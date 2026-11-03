@@ -22,6 +22,16 @@ ivory `#F7F3ED` (page) · surface `#FFFDF9` · blush `#E9D9D4` (image wells) · 
 - **Hero:** one scene shot both wide (≥2400×1500, 16:10) and tall (≥1500×1875, 4:5), with calm space on the left for the desktop crop.
 - **Category:** 4:5 per category, one clear object, consistent background family.
 
+## Before → after (homepage)
+| | Before (V0.2) | After (V0.25 Stage C) |
+|---|---|---|
+| Hero | Text on a blush band, no image | Split hero, art-directed image (tall on mobile, wide on desktop), plum CTA + secondary link |
+| Categories | Five text pills | Mosaic: owners' first category leads, four image tiles, names under images |
+| Products | One card, generic | Refined card: 4:5 blush well, gift tag on personalisable items, sale and sold-out states |
+| Story | None | Three-step personalisation sequence |
+| Trust | Footer line only | COD strip in header + trust row using configured facts only |
+| Footer | Links | Adds language switcher; lighter surface |
+
 ## Status
 - Stage C (homepage) implemented and awaiting review.
 - Stage D (shop, product, bag, checkout, success) not started. The new product card and tokens already apply sitewide.

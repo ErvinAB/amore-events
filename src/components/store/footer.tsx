@@ -4,6 +4,7 @@ import type { Dictionary } from "@/i18n/dictionary";
 import type { CategorySummary } from "@/lib/catalog/queries";
 import type { StoreSettings } from "@/lib/catalog/settings";
 import { site } from "@/config/site";
+import { LanguageSwitcher } from "./language-switcher";
 
 /** Only shows contact details/socials the owners have actually entered. */
 export function Footer({
@@ -23,11 +24,12 @@ export function Footer({
     ["TikTok", settings.tiktok_url],
   ].filter((s): s is [string, string] => !!s[1]);
   return (
-    <footer className="mt-auto border-t border-line bg-tissue/60">
+    <footer className="mt-auto border-t border-line bg-surface">
       <div className="gutter mx-auto grid max-w-wide gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-2">
           <p className="font-serif text-xl">{site.name}</p>
           <p className="max-w-xs text-sm text-ink-muted">{dict.meta.defaultDescription}</p>
+          <LanguageSwitcher current={locale} label={dict.nav.language} className="-ml-2 mt-4" />
         </div>
         <div>
           <h2 className="mb-3 font-sans text-sm font-medium">{dict.nav.shop}</h2>

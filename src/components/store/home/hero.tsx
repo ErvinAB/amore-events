@@ -17,19 +17,19 @@ export function HomeHero({ locale, t }: { locale: Locale; t: Dictionary["home"] 
   } = getImageProps({ ...common, ...homeImagery.heroTall, quality: 85 });
 
   return (
-    <section className="mx-auto grid max-w-wide lg:grid-cols-[5fr_7fr] lg:items-center lg:gap-16 lg:px-8 lg:py-14">
+    <section className="mx-auto grid max-w-wide lg:grid-cols-[5fr_7fr] lg:items-center lg:gap-14 lg:px-8 lg:py-14">
       <div className="relative order-1 lg:order-2">
         <picture>
           <source media="(min-width: 1024px)" srcSet={wide.srcSet} sizes={wide.sizes} />
           {/* eslint-disable-next-line jsx-a11y/alt-text -- alt is in `tall` */}
           <img {...tall} srcSet={tallSrcSet} className="aspect-[4/5] w-full object-cover lg:aspect-[16/10] lg:rounded-image" />
         </picture>
-        <div className="absolute top-5 left-0 lg:top-auto lg:bottom-10 lg:-left-6">
+        <div className="absolute top-5 left-0 lg:top-8 lg:-left-6">
           <GiftTag>{t.heroTag}</GiftTag>
         </div>
       </div>
       <div className="gutter order-2 flex flex-col gap-6 py-10 lg:order-1 lg:px-0 lg:py-0">
-        <h1 className="heading-display max-w-[14ch]">{t.heroTitle}</h1>
+        <h1 className="heading-display max-w-[17ch]">{t.heroTitle}</h1>
         <p className="max-w-[42ch] text-lg text-ink-muted">{t.heroBody}</p>
         <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <ButtonLink href={localePath(locale, "/shop")}>{t.heroCta}</ButtonLink>
