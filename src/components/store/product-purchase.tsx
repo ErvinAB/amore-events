@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { localized, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionary";
 import {
@@ -13,7 +13,7 @@ import {
 } from "@/lib/personalization/validate";
 import { cartActions } from "@/lib/cart/store";
 import { MAX_QTY } from "@/lib/cart/lines";
-import { Button } from "@/components/ui/button";
+import { Button, buttonClass } from "@/components/ui/button";
 import { Select, TextArea, TextInput } from "@/components/ui/field";
 
 type Props = {
@@ -23,6 +23,9 @@ type Props = {
   locale: Locale;
   t: Pick<Dictionary, "product" | "personalise">;
   bagHref: string;
+  /** For the phone sticky bar: name and formatted price. */
+  name: string;
+  priceLabel: string;
 };
 
 /**
@@ -30,7 +33,7 @@ type Props = {
  * Validation here is for the customer's benefit only; checkout re-validates
  * on the server against the database.
  */
-export function ProductPurchase({ productId, fields, stock, locale, t, bagHref }: Props) {
+export function ProductPurchase({ productId, fields, stock, locale, t, bagHref, name, priceLabel }: Props) {
   const uid = useId();
   const [values, setValues] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, PersonalizationErrorCode>>({});
@@ -39,6 +42,24 @@ export function ProductPurchase({ productId, fields, stock, locale, t, bagHref }
   const [summaryError, setSummaryError] = useState(false);
   const soldOut = stock <= 0;
   const maxQty = Math.max(1, Math.min(MAX_QTY, stock));
+  const buyRef = useRef<HTMLDivElement>(null);
+  const [showBar, setShowBar] = useState(false);
+
+  // Phones: keep "Add to bag" reachable once the main button is off screen,
+  // but get out of the way when the footer is showing.
+  useEffect(() => {
+    const buy = buyRef.current;
+    const footer = document.querySelector("footer");
+    if (!buy || typeof IntersectionObserver === "undefined") return;
+    const seen = new Map<Element, boolean>();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => seen.set(e.target, e.isIntersecting));
+      setShowBar(!seen.get(buy) && !(footer && seen.get(footer)));
+    });
+    io.observe(buy);
+    if (footer) io.observe(footer);
+    return () => io.disconnect();
+  }, []);
 
   const errorText = (f: PersonalizationField, code: PersonalizationErrorCode) =>
     code === "tooLong" ? t.personalise.errors.tooLong.replace("{max}", String(maxLengthFor(f))) : t.personalise.errors[code];
@@ -152,7 +173,7 @@ export function ProductPurchase({ productId, fields, stock, locale, t, bagHref }
         <p className="rounded-control border border-line px-4 py-3 text-ink-muted">{t.product.unavailable}</p>
       ) : (
         <div className="flex flex-col gap-3">
-          <div className="flex items-stretch gap-3">
+          <div ref={buyRef} className="flex items-stretch gap-3">
             <div className="flex items-center rounded-pill border border-line-strong" role="group" aria-label={t.product.quantity}>
               <button
                 type="button"
@@ -194,6 +215,31 @@ export function ProductPurchase({ productId, fields, stock, locale, t, bagHref }
           </div>
         </div>
       )}
+
+      {!soldOut ? (
+        <div
+          className={`fixed inset-x-0 bottom-0 z-20 border-t border-line bg-paper pb-[env(safe-area-inset-bottom)] transition-transform duration-200 motion-reduce:transition-none lg:hidden ${
+            showBar ? "translate-y-0" : "pointer-events-none translate-y-full"
+          }`}
+          aria-hidden={!showBar}
+        >
+          <div className="gutter flex items-center gap-4 py-3">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm">{name}</p>
+              <p className="text-sm text-ink-muted tabular-nums">{priceLabel}</p>
+            </div>
+            {added ? (
+              <Link href={bagHref} className={buttonClass("secondary")} tabIndex={showBar ? undefined : -1}>
+                {t.product.viewBag}
+              </Link>
+            ) : (
+              <Button onClick={add} tabIndex={showBar ? undefined : -1}>
+                {t.product.addToBag}
+              </Button>
+            )}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

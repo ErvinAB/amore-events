@@ -57,7 +57,9 @@
     "productCount": "{count} pieces",
     "productCountOne": "1 piece",
     "empty": "There’s nothing here yet. Have a look at all gifts instead.",
-    "browseAll": "See all gifts"
+    "browseAll": "See all gifts",
+    "browseCategories": "Browse by category",
+    "all": "All"
   },
   "product": {
     "personalisable": "Personalise",
@@ -84,7 +86,10 @@
     "image": "Image {index} of {total}",
     "notFoundTitle": "We couldn’t find that piece",
     "notFoundBody": "It may have sold out or been moved. Everything we have is in the shop.",
-    "fixErrors": "Please check the highlighted details before adding to your bag."
+    "fixErrors": "Please check the highlighted details before adding to your bag.",
+    "related": "You may also like",
+    "breadcrumb": "Breadcrumb",
+    "personaliseFirst": "Personalise and add to bag"
   },
   "personalise": {
     "title": "Make it yours",
@@ -119,7 +124,9 @@
     "lineStockNone": "Sold out. Please remove it to continue.",
     "linePersonalization": "The options for this piece have changed. Please remove it and add it again.",
     "fixBag": "Please fix the items marked below before checking out.",
-    "each": "{price} each"
+    "each": "{price} each",
+    "emptyTitle": "Your bag is waiting",
+    "suggestions": "Ideas to start with"
   },
   "footer": {
     "contact": "Contact",
@@ -128,14 +135,18 @@
     "returns": "Returns",
     "privacy": "Privacy",
     "terms": "Terms of sale",
-    "cod": "Cash on delivery"
+    "cod": "Cash on delivery",
+    "help": "Good to know",
+    "deliveryFrom": "{fee}, free on orders over {amount}.",
+    "deliveryFee": "{fee} per order."
   },
   "errors": {
     "notFoundTitle": "This page isn’t here",
     "notFoundBody": "The link may be old. Our gifts are all in the shop.",
     "genericTitle": "Something went wrong",
     "genericBody": "Please try again. If it keeps happening, contact us and we’ll help.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "notFoundBrowse": "Or start with a category"
   },
   "checkout": {
     "title": "Checkout",

@@ -16,6 +16,14 @@ const browser = await chromium.launch();
 for (const w of widths) {
   const ctx = await browser.newContext({ viewport: { width: w, height: w < 800 ? 844 : 900 }, deviceScaleFactor: w < 800 ? 2 : 1, isMobile: w < 800, hasTouch: w < 800 });
   const page = await ctx.newPage();
+  if (process.env.BAG) {
+    // Two sample products: one with an optional field, one with a required one.
+    await page.goto(base + "/en/product/message-photo-frame", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: "Add to bag" }).first().click();
+    await page.goto(base + "/en/product/initial-leather-keyring", { waitUntil: "networkidle" });
+    await page.getByLabel("Initials").fill("AB");
+    await page.getByRole("button", { name: "Add to bag" }).first().click();
+  }
   for (const p of paths) {
     await page.goto(base + p, { waitUntil: "networkidle" });
     await page.waitForTimeout(600);

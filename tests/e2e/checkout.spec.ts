@@ -22,7 +22,8 @@ async function addNecklace(page: Page, locale: string, name: string, colourLabel
   await page.goto(`/${locale}/product/${NECKLACE}`);
   await page.locator("main input:not([type])").first().fill(name);
   await page.locator("main select").first().selectOption({ label: colourLabel });
-  await page.locator("main").getByRole("button", { name: /Add to bag|Додај во кошничка|Shto në shportë/ }).click();
+  // .first(): the main button (phones also get the sticky bar copy).
+  await page.locator("main").getByRole("button", { name: /Add to bag|Додај во кошничка|Shto në shportë/ }).first().click();
 }
 
 async function fillCheckout(page: Page, phone: string) {

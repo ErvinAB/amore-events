@@ -30,10 +30,11 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/cate
   if (!isLocale(locale)) notFound();
   const category = await getCategoryBySlug(slug);
   if (!category) notFound();
-  const [dict, products, settings] = await Promise.all([
+  const [dict, products, settings, categories] = await Promise.all([
     getDictionary(locale),
     listProducts({ categoryId: category.id }),
     getStoreSettings(),
+    getCategories(),
   ]);
   return (
     <ProductGridPage
@@ -42,7 +43,10 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/cate
       title={localized(category.name, locale)}
       intro={localized(category.description, locale) || undefined}
       products={products}
-      currency={settings.currency_code}
+      settings={settings}
+      categories={categories}
+      currentSlug={category.slug}
+      imagePath={category.image_path}
       showBrowseAll
     />
   );

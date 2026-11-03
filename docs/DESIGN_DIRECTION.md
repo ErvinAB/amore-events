@@ -60,7 +60,22 @@ The owners said the first pass looked flat. With real photos in place, the cause
 | Touch targets ≥ 24px (we use 48px) | WCAG 2.5.8 | W3C | Buttons and links `min-h-touch` |
 | Line length 45–75 characters | Readability | Bringhurst | Body copy capped at 40–44ch |
 
+## Stage D: storefront rollout (2026-11-03)
+| Page | Change |
+|---|---|
+| Shop / category | Header band (category pages use the category's own photo), category chips with the current one marked (horizontal scroll on phones), one shared grid whose columns follow the product count, delivery-facts band |
+| Product | Breadcrumb (tablet and up), delivery fee next to the buy button, **sticky "Add to bag" bar on phones** (shown when the main button is off screen, hidden near the footer; tapping it validates and jumps to the first missing field), "You may also like" (same category first, in-stock only), delivery-facts band |
+| Product card | "New" badge (from `is_new`), 16px name and price |
+| Bag | Warmer empty state with a primary "Find a gift" button; "Chosen for gifting" row below |
+| Checkout | Same empty state; the form is unchanged (no distractions on the way to "Place order") |
+| Order success | Confirmation mark, display heading; wording and data unchanged |
+| 404 | Display heading and category chips to get back on track |
+| Footer | Larger brand block; "Good to know" column with COD and the configured delivery fee/threshold; contact column only when details exist |
+| Copy | `fill()` no longer prints a double full stop after amounts that end in one (Macedonian "ден."); shared by client and server |
+
+Tests: `tests/e2e/storefront.spec.ts` covers the sticky bar (appears, steps aside, validates) and the current-category chip.
+
 ## Status
 - Stage C (homepage) revised after owner feedback (revision 2).
-- Stage D (shop, product, bag, checkout, success) not started. The new product card and tokens already apply sitewide.
+- Stage D (storefront rollout) done; awaiting review. Stage E (polish) next.
 - Current imagery is CC0 stock photography (stand-ins); see `public/dev-imagery/CREDITS.md`.

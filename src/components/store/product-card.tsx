@@ -46,19 +46,22 @@ export function ProductCard({
             <GiftTag>{dict.product.personalisable}</GiftTag>
           </span>
         ) : null}
+        {product.is_new && !soldOut ? (
+          <span className="absolute top-3 right-3 rounded-pill bg-ink px-2.5 py-0.5 text-xs leading-5 text-on-ink">{dict.product.new}</span>
+        ) : null}
         {soldOut ? (
           <span className="absolute bottom-3 left-3 rounded-pill bg-surface px-3 py-1 text-xs">{dict.product.outOfStock}</span>
         ) : null}
       </div>
       <div className="flex flex-col gap-0.5">
-        <h3 className="font-sans text-[0.9375rem] leading-snug text-ink decoration-taupe underline-offset-4 group-hover:underline">{name}</h3>
+        <h3 className="font-sans text-base leading-snug text-ink decoration-taupe underline-offset-4 group-hover:underline">{name}</h3>
         <Price
           price={product.price_minor}
           sale={product.sale_price_minor}
           currency={currency}
           locale={locale}
           wasLabel={dict.product.was}
-          className="text-[0.9375rem] text-ink"
+          className="text-base text-ink"
         />
       </div>
     </Link>

@@ -100,6 +100,14 @@
     text-wrap: pretty;
   }
 
+  /* Fields focused by validation shouldn't hide under the sticky header. */
+  input,
+  select,
+  textarea,
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-ribbon);
     outline-offset: 2px;

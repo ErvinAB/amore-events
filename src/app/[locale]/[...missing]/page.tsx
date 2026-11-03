@@ -4,3 +4,6 @@ import { notFound } from "next/navigation";
 export default function Missing() {
   notFound();
 }
+
+// Always a 404; nothing to validate for instant navigation.
+export const instant = false;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { fill } from "@/i18n/fill";
 import { localized, localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionary";
 import type { CategorySummary } from "@/lib/catalog/queries";
@@ -27,7 +28,7 @@ export function Header({
     <>
     <p className="gutter bg-tissue py-2 text-center text-xs text-ink">
       {dict.home.announcement}
-      {freeDeliveryFrom ? <span className="hidden sm:inline"> · {dict.home.announcementFree.replace("{amount}", freeDeliveryFrom)}</span> : null}
+      {freeDeliveryFrom ? <span className="hidden sm:inline"> · {fill(dict.home.announcementFree, { amount: freeDeliveryFrom })}</span> : null}
     </p>
     <header className="sticky top-0 z-30 border-b border-line bg-paper">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-control focus:bg-paper focus:px-4 focus:py-2">

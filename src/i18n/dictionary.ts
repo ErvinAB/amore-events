@@ -33,7 +33,4 @@ export async function getDictionary(locale: Locale): Promise<Dictionary> {
   return merge(en, await loaders[locale]());
 }
 
-/** Tiny `{name}` interpolation. */
-export function fill(template: string, values: Record<string, string | number>): string {
-  return template.replace(/\{(\w+)\}/g, (_, k: string) => String(values[k] ?? `{${k}}`));
-}
+export { fill } from "./fill";

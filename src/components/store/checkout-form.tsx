@@ -38,11 +38,10 @@ export function CheckoutForm({ locale, t }: { locale: Locale; t: Dictionary }) {
 
   if (cart.lines.length === 0) {
     return (
-      <div className="flex flex-col items-start gap-4">
-        <p className="text-ink-muted">{c.empty}</p>
-        <ButtonLink href={localePath(locale, "/shop")} variant="secondary">
-          {t.bag.continue}
-        </ButtonLink>
+      <div className="flex flex-col items-start gap-5 rounded-image bg-surface p-6 sm:p-8">
+        <p className="font-serif text-h3">{t.bag.emptyTitle}</p>
+        <p className="-mt-3 text-ink-muted">{c.empty}</p>
+        <ButtonLink href={localePath(locale, "/shop")}>{t.home.heroCta}</ButtonLink>
       </div>
     );
   }

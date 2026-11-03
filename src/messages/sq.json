@@ -58,7 +58,9 @@
     "productCount": "{count} produkte",
     "productCountOne": "1 produkt",
     "empty": "Ende nuk ka asgjë këtu. Shikoni të gjitha dhuratat.",
-    "browseAll": "Shiko të gjitha dhuratat"
+    "browseAll": "Shiko të gjitha dhuratat",
+    "browseCategories": "Shfleto sipas kategorisë",
+    "all": "Të gjitha"
   },
   "product": {
     "personalisable": "Personalizo",
@@ -85,7 +87,10 @@
     "image": "Fotografia {index} nga {total}",
     "notFoundTitle": "Nuk e gjetëm këtë produkt",
     "notFoundBody": "Mund të jetë shitur ose zhvendosur. Gjithçka që kemi është në dyqan.",
-    "fixErrors": "Kontrolloni fushat e shënuara para se ta shtoni në shportë."
+    "fixErrors": "Kontrolloni fushat e shënuara para se ta shtoni në shportë.",
+    "related": "Mund t’ju pëlqejë edhe",
+    "breadcrumb": "Shtegu",
+    "personaliseFirst": "Personalizo dhe shto në shportë"
   },
   "personalise": {
     "title": "Bëje tëndin",
@@ -120,7 +125,9 @@
     "lineStockNone": "I shitur. Hiqeni për të vazhduar.",
     "linePersonalization": "Opsionet e këtij produkti kanë ndryshuar. Hiqeni dhe shtojeni përsëri.",
     "fixBag": "Rregulloni artikujt e shënuar para se të vazhdoni.",
-    "each": "{price} për copë"
+    "each": "{price} për copë",
+    "emptyTitle": "Shporta juaj ju pret",
+    "suggestions": "Ide për të filluar"
   },
   "footer": {
     "contact": "Kontakt",
@@ -129,14 +136,18 @@
     "returns": "Kthimet",
     "privacy": "Privatësia",
     "terms": "Kushtet e shitjes",
-    "cod": "Pagesë në dorëzim"
+    "cod": "Pagesë në dorëzim",
+    "help": "Mirë të dini",
+    "deliveryFrom": "{fee}, falas për porosi mbi {amount}.",
+    "deliveryFee": "{fee} për porosi."
   },
   "errors": {
     "notFoundTitle": "Kjo faqe nuk ekziston",
     "notFoundBody": "Lidhja mund të jetë e vjetër. Të gjitha dhuratat janë në dyqan.",
     "genericTitle": "Diçka shkoi keq",
     "genericBody": "Provoni përsëri. Nëse vazhdon, na kontaktoni.",
-    "retry": "Provo përsëri"
+    "retry": "Provo përsëri",
+    "notFoundBrowse": "Ose filloni me një kategori"
   },
   "checkout": {
     "title": "Porosia",

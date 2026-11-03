@@ -27,13 +27,18 @@ export default async function OrderSuccessPage({ params }: PageProps<"/[locale]/
   const s = dict.success;
 
   return (
-    <main id="main" className="gutter mx-auto flex w-full max-w-prose flex-1 flex-col gap-6 py-14 sm:py-20">
+    <main id="main" className="gutter mx-auto flex w-full max-w-prose flex-1 flex-col gap-6 py-16 sm:py-24">
       {confirmation ? (
         <>
           <ClearCartOnce orderNumber={confirmation.orderNumber} />
-          <h1 className="heading-1">{s.title}</h1>
+          <span aria-hidden="true" className="flex size-14 items-center justify-center rounded-full bg-success-tint">
+            <svg viewBox="0 0 24 24" className="size-7 fill-none stroke-success stroke-2 [stroke-linecap:round] [stroke-linejoin:round]">
+              <path d="m5 12.5 4.5 4.5L19 7.5" />
+            </svg>
+          </span>
+          <h1 className="heading-display">{s.title}</h1>
           <p className="text-lg text-ink">{s.body}</p>
-          <dl className="grid gap-4 rounded-image bg-tissue p-5 sm:grid-cols-2 sm:p-6">
+          <dl className="grid gap-4 rounded-image bg-tissue p-6 sm:grid-cols-2 sm:p-8">
             <div>
               <dt className="text-sm text-ink-muted">{s.orderNumber}</dt>
               <dd className="mt-1 font-serif text-h3 tabular-nums" translate="no">

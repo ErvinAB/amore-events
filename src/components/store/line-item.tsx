@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { fill } from "@/i18n/fill";
 import Link from "next/link";
 import { localized, localePath, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionary";
@@ -64,7 +65,7 @@ export function LineItem({
           </p>
         ))}
         {!compact && line.status !== "unavailable" && line.quantity > 1 ? (
-          <p className="text-sm text-ink-muted">{t.bag.each.replace("{price}", fmt(line.unitMinor))}</p>
+          <p className="text-sm text-ink-muted">{fill(t.bag.each, { price: fmt(line.unitMinor) })}</p>
         ) : null}
         {problem ? (
           <p className="text-sm text-error" role="status">

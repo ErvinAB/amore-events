@@ -1,4 +1,5 @@
 import { localized, type Locale } from "@/i18n/config";
+import { fill } from "@/i18n/fill";
 import type { Dictionary } from "@/i18n/dictionary";
 import type { StoreSettings } from "@/lib/catalog/settings";
 import { formatMoney } from "@/lib/money";
@@ -43,7 +44,7 @@ export function TrustRow({ t, settings, locale }: { t: Dictionary["home"]; setti
     items.push({
       icon: "parcel",
       title: t.trustFree,
-      body: t.trustFreeBody.replace("{amount}", formatMoney(settings.free_delivery_threshold_minor, { currency: settings.currency_code, locale })),
+      body: fill(t.trustFreeBody, { amount: formatMoney(settings.free_delivery_threshold_minor, { currency: settings.currency_code, locale }) }),
     });
   }
   const estimate = settings.delivery_estimate ? localized({ en: settings.delivery_estimate.en ?? "", ...settings.delivery_estimate }, locale) : "";
