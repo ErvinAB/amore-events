@@ -24,11 +24,11 @@
     "announcementFree": "Free delivery over {amount}",
     "heroSecondary": "Personalised gifts",
     "heroTag": "Add a name, a date or a few words",
-    "heroAlt": "Sample still life of a wrapped gift, a tag and a necklace",
+    "heroAlt": "Two people holding hands, one wearing gold bangles",
     "allGifts": "All gifts",
     "storyTitle": "A gift with their name on it",
     "storyBody": "Choose a piece, tell us the words, and we’ll make it theirs. You pay when it reaches your door.",
-    "storyAlt": "Sample image of two gift tags",
+    "storyAlt": "Two lit tealights in ribbed glass holders",
     "steps": [
       {
         "title": "Choose a piece",
@@ -77,6 +77,8 @@
     "unavailable": "This piece is sold out at the moment.",
     "description": "Details",
     "deliveryTitle": "Delivery",
+    "deliveryFee": "{fee} delivery.",
+    "deliveryFeeFree": "{fee} delivery, free on orders over {amount}.",
     "codTitle": "Pay when it arrives",
     "codBody": "Cash on delivery. You pay the courier when your gift is delivered.",
     "image": "Image {index} of {total}",

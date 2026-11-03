@@ -25,11 +25,11 @@
     "announcementFree": "Dërgesë falas mbi {amount}",
     "heroSecondary": "Dhurata të personalizuara",
     "heroTag": "Shtoni një emër, një datë ose disa fjalë",
-    "heroAlt": "Foto shembull e një dhurate të mbështjellë, një etikete dhe një gjerdani",
+    "heroAlt": "Dy njerëz që mbajnë duart, njëri me byzylykë ari",
     "allGifts": "Të gjitha dhuratat",
     "storyTitle": "Një dhuratë me emrin e tyre",
     "storyBody": "Zgjidhni një produkt, na tregoni fjalët dhe ne do ta bëjmë të tyrin. Paguani kur të arrijë te dera juaj.",
-    "storyAlt": "Foto shembull e dy etiketave për dhuratë",
+    "storyAlt": "Dy qirinj të ndezur në mbajtëse qelqi me brinjë",
     "steps": [
       {
         "title": "Zgjidhni një produkt",
@@ -78,6 +78,8 @@
     "unavailable": "Ky produkt aktualisht është i shitur.",
     "description": "Detajet",
     "deliveryTitle": "Dërgesa",
+    "deliveryFee": "Dërgesa {fee}.",
+    "deliveryFeeFree": "Dërgesa {fee}, falas për porosi mbi {amount}.",
     "codTitle": "Paguani kur të arrijë",
     "codBody": "Pagesë me para në dorë. I paguani korrierit kur të dorëzohet dhurata.",
     "image": "Fotografia {index} nga {total}",

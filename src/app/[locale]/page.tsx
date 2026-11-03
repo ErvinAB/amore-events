@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { isLocale } from "@/i18n/config";
+import { isLocale, localePath } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionary";
 import { getCategories, listProducts } from "@/lib/catalog/queries";
 import { getStoreSettings } from "@/lib/catalog/settings";
@@ -9,7 +10,7 @@ import { CategoryMosaic } from "@/components/store/home/category-mosaic";
 import { PersonalisationStory } from "@/components/store/home/story";
 import { TrustRow } from "@/components/store/home/trust";
 
-// V0.25 "Modern Gift Atelier" homepage. Imagery is placeholder (see src/config/home.ts).
+// V0.25 "Modern Gift Atelier" homepage. Imagery is CC0 stand-ins (see src/config/home.ts).
 export default async function HomePage({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
@@ -28,14 +29,29 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <CategoryMosaic categories={categories} locale={locale} title={t.categoriesTitle} allLabel={t.allGifts} />
 
       <section className="gutter mx-auto max-w-wide pb-16 lg:pb-24" aria-labelledby="home-featured">
-        <h2 id="home-featured" className="heading-1 mb-8">
-          {t.featuredTitle}
-        </h2>
+        <div className="mb-8 flex items-baseline justify-between gap-4">
+          <h2 id="home-featured" className="heading-1">
+            {t.featuredTitle}
+          </h2>
+          <Link href={localePath(locale, "/shop")} className="shrink-0 border-b border-taupe text-sm hover:border-ink">
+            {t.allGifts}
+          </Link>
+        </div>
         {products.length ? (
-          <ul className="grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          // Columns follow the count so a short selection never leaves an empty slot.
+          // Phones: a swipeable row (no orphaned last card). Wider: a grid.
+          <ul
+            className={`-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:gap-x-4 sm:gap-y-10 sm:overflow-visible sm:px-0 lg:gap-x-6 ${products.length >= 4 ? "lg:grid-cols-4" : ""}`}
+          >
             {products.map((p) => (
-              <li key={p.id}>
-                <ProductCard product={p} locale={locale} dict={dict} currency={settings.currency_code} />
+              <li key={p.id} className="w-[72%] shrink-0 snap-start sm:w-auto">
+                <ProductCard
+                  product={p}
+                  locale={locale}
+                  dict={dict}
+                  currency={settings.currency_code}
+                  sizes={products.length >= 4 ? undefined : "(min-width: 1440px) 450px, (min-width: 640px) 33vw, 72vw"}
+                />
               </li>
             ))}
           </ul>

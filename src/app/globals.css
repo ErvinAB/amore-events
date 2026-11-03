@@ -23,6 +23,8 @@
   --color-ribbon-hover: #61323f;
   --color-ribbon-tint: #f2e5e8;
   --color-on-ribbon: #ffffff;
+  --color-on-ink: #f7f3ed;       /* text on the dark band */
+  --color-on-ink-muted: #c8bdb4; /* 8.9:1 on ink */
   --color-success: #2e6b47;
   --color-success-tint: #e7f1ea;
   --color-error: #b3261e;
@@ -51,8 +53,8 @@
   --text-h2--line-height: 2.375rem;
   --text-h1: 2.25rem;
   --text-h1--line-height: 2.75rem;
-  --text-display: 3.75rem;
-  --text-display--line-height: 4.125rem;
+  --text-display: 4.5rem;
+  --text-display--line-height: 4.75rem;
 
   /* Radii — by hierarchy, not one radius everywhere */
   --radius-image: 4px;
@@ -123,11 +125,11 @@
   font-family: var(--font-serif);
   font-weight: 400;
   letter-spacing: -0.02em;
-  font-size: 2.5rem;
-  line-height: 1.08;
+  font-size: 2.75rem;
+  line-height: 1.06;
   @media (width >= 64rem) {
     font-size: var(--text-display);
-    line-height: 1.06;
+    line-height: 1.04;
   }
 }
 @utility heading-1 {

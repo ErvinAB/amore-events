@@ -7,6 +7,7 @@ import { localeAlternates, openGraphLocale } from "@/i18n/seo";
 import { getProductBySlug, listActiveProductSlugs } from "@/lib/catalog/queries";
 import { getStoreSettings } from "@/lib/catalog/settings";
 import { productImageUrl } from "@/lib/catalog/images";
+import { formatMoney } from "@/lib/money";
 import { Gallery } from "@/components/store/gallery";
 import { Price } from "@/components/store/price";
 import { ProductPurchase } from "@/components/store/product-purchase";
@@ -52,6 +53,9 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
   const short = localized(product.short_description, locale);
   const description = localized(product.description, locale);
   const delivery = settings.delivery_estimate ? localized({ en: settings.delivery_estimate.en ?? "", ...settings.delivery_estimate }, locale) : "";
+  const fee = settings.delivery_fee_minor;
+  const freeFrom = settings.free_delivery_threshold_minor;
+  const money = (minor: number) => formatMoney(minor, { currency: settings.currency_code, locale });
   const stockText =
     product.stock <= 0 ? dict.product.outOfStock : product.stock <= LOW_STOCK ? fill(dict.product.lowStock, { count: product.stock }) : dict.product.inStock;
   const category = product.categories[0];
@@ -104,10 +108,15 @@ export default async function ProductPage({ params }: PageProps<"/[locale]/produ
               <dt className="font-medium">{dict.product.codTitle}</dt>
               <dd className="mt-1 text-ink-muted">{dict.product.codBody}</dd>
             </div>
-            {delivery ? (
+            {/* Full cost near the buy button (configured facts only). */}
+            {fee > 0 || delivery ? (
               <div className="py-4">
                 <dt className="font-medium">{dict.product.deliveryTitle}</dt>
-                <dd className="mt-1 text-ink-muted">{delivery}</dd>
+                <dd className="mt-1 text-ink-muted">
+                  {fee > 0 ? fill(freeFrom ? dict.product.deliveryFeeFree : dict.product.deliveryFee, { fee: money(fee), amount: freeFrom ? money(freeFrom) : "" }) : null}
+                  {fee > 0 && delivery ? " " : null}
+                  {delivery}
+                </dd>
               </div>
             ) : null}
           </dl>

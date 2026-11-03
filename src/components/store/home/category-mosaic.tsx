@@ -5,7 +5,8 @@ import type { CategorySummary } from "@/lib/catalog/queries";
 import { productImageUrl } from "@/lib/catalog/images";
 
 /**
- * One lead category (the owners' first in sort order) plus the rest.
+ * One lead category (the owners' first in sort order), tall on desktop,
+ * beside a 2×2 of the rest.
  * Names sit under the images, never on top of them.
  */
 export function CategoryMosaic({ categories, locale, title, allLabel }: { categories: CategorySummary[]; locale: Locale; title: string; allLabel: string }) {
@@ -13,13 +14,13 @@ export function CategoryMosaic({ categories, locale, title, allLabel }: { catego
   const [lead, ...rest] = categories;
   const tile = (c: CategorySummary, isLead: boolean) => (
     <Link href={localePath(locale, `/category/${c.slug}`)} className="group flex h-full flex-col gap-3 outline-offset-4">
-      <div className={`relative overflow-hidden rounded-image bg-tissue ${isLead ? "aspect-[5/4] lg:aspect-auto lg:flex-1" : "aspect-[4/5]"}`}>
+      <div className={`relative overflow-hidden rounded-image bg-tissue ${isLead ? "aspect-[5/4] lg:aspect-auto lg:min-h-0 lg:flex-1" : "aspect-[4/5] lg:aspect-[5/4]"}`}>
         {c.image_path ? (
           <Image
             src={productImageUrl(c.image_path)}
             alt=""
             fill
-            sizes={isLead ? "(min-width: 1024px) 50vw, 100vw" : "(min-width: 1024px) 25vw, 50vw"}
+            sizes={isLead ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 33vw, 50vw"}
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transition-none"
           />
         ) : null}
@@ -39,8 +40,8 @@ export function CategoryMosaic({ categories, locale, title, allLabel }: { catego
           {allLabel}
         </Link>
       </div>
-      <ul className="grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-4 lg:grid-rows-[auto_auto] lg:gap-x-5 lg:gap-y-10">
-        <li className="col-span-2 lg:row-span-2">{tile(lead, true)}</li>
+      <ul className="grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-3 lg:gap-x-6 lg:gap-y-10">
+        <li className="col-span-2 lg:col-span-1 lg:row-span-2">{tile(lead, true)}</li>
         {rest.map((c) => (
           <li key={c.id}>{tile(c, false)}</li>
         ))}
