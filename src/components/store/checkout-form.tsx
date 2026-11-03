@@ -89,8 +89,9 @@ export function CheckoutForm({ locale, t }: { locale: Locale; t: Dictionary }) {
   const canSubmit = !!quote?.canCheckout && !loading && !pending && !!token;
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} noValidate className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-14">
-      <div className="flex flex-col gap-8">
+    <form ref={formRef} onSubmit={onSubmit} noValidate className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem] lg:gap-x-14">
+      {/* Mobile order: summary → details → payment + button. Desktop: details | sidebar. */}
+      <div className="order-2 flex flex-col gap-8 lg:order-none lg:col-start-1 lg:row-span-2 lg:row-start-1">
         {formError ? (
           <p id="checkout-error" role="alert" tabIndex={-1} className="rounded-control border border-error/30 bg-error-tint px-4 py-3 text-sm text-error">
             {formError}{" "}
@@ -115,7 +116,7 @@ export function CheckoutForm({ locale, t }: { locale: Locale; t: Dictionary }) {
         <fieldset className="flex flex-col gap-4">
           <legend className="heading-3 mb-4">{c.address}</legend>
           {input("street_address", c.street, { autoComplete: "street-address", maxLength: 300 })}
-          <div className="grid grid-cols-[minmax(0,1fr)_8rem] gap-4">
+          <div className="grid grid-cols-[minmax(0,1fr)_9rem] items-start gap-4 [&>div>label]:min-h-5 [&>div>label]:whitespace-nowrap">
             {input("city", c.city, { autoComplete: "address-level2", maxLength: 100 })}
             {input("postal_code", c.postalCode, { autoComplete: "postal-code", inputMode: "numeric", maxLength: 20, optional: true })}
           </div>
@@ -141,8 +142,11 @@ export function CheckoutForm({ locale, t }: { locale: Locale; t: Dictionary }) {
         </div>
       </div>
 
-      <aside className="flex h-fit flex-col gap-6 lg:sticky lg:top-24">
-        <section aria-labelledby="summary-title" className="flex flex-col gap-5 rounded-image bg-tissue p-5 sm:p-6" aria-busy={loading}>
+      <section
+        aria-labelledby="summary-title"
+        className="order-1 flex h-fit flex-col gap-5 rounded-image bg-tissue p-5 sm:p-6 lg:order-none lg:col-start-2 lg:row-start-1"
+        aria-busy={loading}
+      >
           <div className="flex items-baseline justify-between">
             <h2 id="summary-title" className="heading-3">
               {c.summary}
@@ -165,8 +169,9 @@ export function CheckoutForm({ locale, t }: { locale: Locale; t: Dictionary }) {
           ) : (
             <p className="text-sm text-ink-muted">{t.bag.updating}</p>
           )}
-        </section>
+      </section>
 
+      <div className="order-3 flex h-fit flex-col gap-6 lg:order-none lg:col-start-2 lg:row-start-2">
         <section aria-labelledby="payment-title" className="rounded-image border border-line p-5 sm:p-6">
           <h2 id="payment-title" className="text-sm font-medium text-ink-muted">
             {c.payment}
@@ -178,7 +183,7 @@ export function CheckoutForm({ locale, t }: { locale: Locale; t: Dictionary }) {
         <Button type="submit" className="w-full" disabled={!canSubmit}>
           {pending ? c.placing : c.placeOrder}
         </Button>
-      </aside>
+      </div>
     </form>
   );
 }

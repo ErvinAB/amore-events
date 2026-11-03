@@ -57,13 +57,19 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
   const localeRaw = String(form.get("locale") ?? "");
   const locale: Locale = isLocale(localeRaw) ? localeRaw : "en";
 
-  // 1. Bot checks. A filled honeypot gets a generic error (never a fake order).
+  // 1. Honeypot. A filled honeypot gets a generic error (never a fake order).
   if (String(form.get("company_website") ?? "") !== "") return { formError: "generic" };
+
+  // 2. Customer details first, so a person who taps early sees what's missing.
+  const customer = parseCustomer(Object.fromEntries(form.entries()));
+  if (!customer.ok) return { fieldErrors: customer.errors };
+
+  // 3. Realistic completion time (signed token issued when the form opened).
   const token = verifyFormToken(form.get("form_token"));
   if (token === "tooFast") return { formError: "tooFast" };
   if (token !== "ok") return { formError: "sessionExpired" };
 
-  // 2. Per-IP submission throttle (generous: shared household/work IPs).
+  // 4. Per-IP submission throttle (generous: households, workplaces, CGNAT).
   const ipHash = await clientIpHash();
   const db = createSupabaseSecretClient();
   if (ipHash) {
@@ -75,11 +81,7 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
     if (!allowed) return { formError: "rateLimited" };
   }
 
-  // 3. Customer details.
-  const customer = parseCustomer(Object.fromEntries(form.entries()));
-  if (!customer.ok) return { fieldErrors: customer.errors };
-
-  // 4. Cart: structure, then current catalogue + personalisation rules.
+  // 5. Cart: structure, then current catalogue + personalisation rules.
   let rawCart: unknown;
   try {
     rawCart = JSON.parse(String(form.get("cart") ?? "[]"));
@@ -92,7 +94,7 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
   const quote = await quoteLines(lines.data);
   if (!quote.canCheckout) return { formError: "cartChanged", refreshCart: true };
 
-  // 5. Authoritative, transactional order creation.
+  // 6. Authoritative, transactional order creation.
   const { data, error } = await db.rpc("place_order", {
     p_customer: customer.value,
     p_lines: quote.lines.map((l) => ({ product_id: l.productId, quantity: l.quantity, personalization: l.normalized })),
@@ -112,7 +114,7 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
     duplicate: boolean;
   };
 
-  // 6. Owner notification AFTER commit, outside the response. Never throws into checkout.
+  // 7. Owner notification AFTER commit, outside the response. Never throws into checkout.
   if (!order.duplicate) {
     after(async () => {
       try {
@@ -133,7 +135,7 @@ export async function placeOrder(_prev: CheckoutState, form: FormData): Promise<
     });
   }
 
-  // 7. Sanitized confirmation only (no customer data, no lookup by number).
+  // 8. Sanitized confirmation only (no customer data, no lookup by number).
   (await cookies()).set(
     CONFIRMATION_COOKIE,
     signConfirmation({ orderNumber: order.order_number, totalMinor: order.total_minor, currency: order.currency_code, issuedAt: Date.now() }),
