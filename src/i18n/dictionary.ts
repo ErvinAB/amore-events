@@ -12,6 +12,11 @@ const loaders: Record<Locale, () => Promise<unknown>> = {
 
 /** Deep-merge `override` onto `base`; blank strings do not override. */
 function merge<T>(base: T, override: unknown): T {
+  if (Array.isArray(base)) {
+    return (Array.isArray(override) && override.length === base.length
+      ? base.map((b, i) => merge(b, override[i]))
+      : base) as T;
+  }
   if (typeof base !== "object" || base === null || typeof override !== "object" || override === null) {
     return typeof override === "string" && override.trim() ? (override as T) : base;
   }

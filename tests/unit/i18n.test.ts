@@ -44,3 +44,18 @@ describe("localePath()", () => {
     expect(localePath("en")).toBe("/en");
   });
 });
+
+import { getDictionary } from "@/i18n/dictionary";
+describe("getDictionary()", () => {
+  it("keeps arrays as arrays and merges per item", async () => {
+    const mk = await getDictionary("mk");
+    expect(Array.isArray(mk.home.steps)).toBe(true);
+    expect(mk.home.steps).toHaveLength(3);
+    expect(mk.home.steps[0].title).toBe("Изберете производ");
+  });
+  it("falls back to English for missing keys", async () => {
+    const sq = await getDictionary("sq");
+    const en = await getDictionary("en");
+    expect(Object.keys(sq.home).sort()).toEqual(Object.keys(en.home).sort());
+  });
+});

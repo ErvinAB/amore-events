@@ -45,7 +45,7 @@ export function describedBy(id: string, { hint, error }: { hint?: unknown; error
 }
 
 const control =
-  "w-full rounded-control border bg-paper px-3.5 text-base text-ink placeholder:text-ink-muted/70 " +
+  "w-full rounded-control border bg-surface px-3.5 text-base text-ink placeholder:text-ink-muted/70 " +
   "border-line-strong hover:border-ink-muted focus-visible:border-ribbon " +
   "aria-[invalid=true]:border-error disabled:bg-tissue disabled:text-ink-muted";
 

@@ -1,6 +1,6 @@
 # Project Plan — Gift Store (working name, brand TBC)
 
-Status: **V0.2 complete (2026-11-03), awaiting review. V0.3 not started.**
+Status: **V0.25 Stage C (homepage redesign) awaiting visual review. V0.3 not started.**
 Last updated: 2026-11-03
 
 ---

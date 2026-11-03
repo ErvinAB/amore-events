@@ -19,6 +19,9 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
+  // Dev-only design explorations (the route itself 404s in production).
+  if (pathname === "/design-lab" || pathname.startsWith("/design-lab/")) return NextResponse.next();
+
   const first = pathname.split("/")[1];
   if (isLocale(first)) return NextResponse.next();
 

@@ -14,12 +14,43 @@
     "skipToContent": "Skip to content"
   },
   "home": {
-    "heroTitle": "Gifts that carry their name",
-    "heroBody": "Jewellery, keepsakes and home pieces, personalised with the names, dates and words that matter to you.",
-    "heroCta": "Browse gifts",
+    "heroTitle": "Thoughtful gifts, made personal",
+    "heroBody": "Jewellery, keepsakes and pieces for the home, finished with the names, dates and words that make them theirs.",
+    "heroCta": "Find a gift",
     "categoriesTitle": "Shop by category",
     "featuredTitle": "Chosen for gifting",
-    "emptyCatalogue": "New pieces are on their way. Please check back soon."
+    "emptyCatalogue": "New pieces are on their way. Please check back soon.",
+    "announcement": "Pay in cash when your gift arrives",
+    "announcementFree": "Free delivery over {amount}",
+    "heroSecondary": "Personalised gifts",
+    "heroTag": "Add a name, a date or a few words",
+    "heroAlt": "Sample still life of a wrapped gift, a tag and a necklace",
+    "allGifts": "All gifts",
+    "storyTitle": "A gift with their name on it",
+    "storyBody": "Choose a piece, tell us the words, and we’ll make it theirs. You pay when it reaches your door.",
+    "storyAlt": "Sample image of two gift tags",
+    "steps": [
+      {
+        "title": "Choose a piece",
+        "body": "Jewellery, keychains and gifts for the home."
+      },
+      {
+        "title": "Make it yours",
+        "body": "Add a name, a date or a short message."
+      },
+      {
+        "title": "Pay on delivery",
+        "body": "Cash to the courier. No card needed."
+      }
+    ],
+    "trustTitle": "Good to know",
+    "trustCod": "Cash on delivery",
+    "trustCodBody": "Pay the courier when your order arrives. No card details needed.",
+    "trustFree": "Free delivery",
+    "trustFreeBody": "On orders over {amount}.",
+    "trustDelivery": "Delivery",
+    "trustHelp": "Questions?",
+    "trustHelpBody": "Call or message us on {phone}."
   },
   "shop": {
     "title": "All gifts",
@@ -29,7 +60,7 @@
     "browseAll": "See all gifts"
   },
   "product": {
-    "personalisable": "Personalisable",
+    "personalisable": "Personalise",
     "new": "New",
     "sale": "Sale",
     "was": "Was {price}",

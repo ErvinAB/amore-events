@@ -12,7 +12,7 @@ import { CATALOG_TAG } from "./tags";
  * via updateTag(CATALOG_TAG).
  */
 
-export type CategorySummary = { id: string; slug: string; name: LocalizedText; description: LocalizedText | null };
+export type CategorySummary = { id: string; slug: string; name: LocalizedText; description: LocalizedText | null; image_path: string | null };
 
 export type ProductImage = { storage_path: string; alt_text: LocalizedText | null; width: number | null; height: number | null };
 
@@ -77,7 +77,7 @@ export async function getCategories(): Promise<CategorySummary[]> {
   tagged();
   const { data, error } = await createSupabasePublicClient()
     .from("categories")
-    .select("id, slug, name, description")
+    .select("id, slug, name, description, image_path")
     .order("sort_order")
     .order("created_at");
   if (error) throw error;
@@ -89,7 +89,7 @@ export async function getCategoryBySlug(slug: string): Promise<CategorySummary |
   tagged();
   const { data, error } = await createSupabasePublicClient()
     .from("categories")
-    .select("id, slug, name, description")
+    .select("id, slug, name, description, image_path")
     .eq("slug", slug)
     .maybeSingle();
   if (error) throw error;

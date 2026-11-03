@@ -4,21 +4,24 @@
  * Design tokens — PROVISIONAL until the final brand identity and real
  * product photography are supplied. Change values here, not in components.
  *
- * Concept: "tissue and ribbon". White base for true-colour photography,
- * blush tissue for quiet surfaces, one plum ribbon accent.
+ * Direction: "Modern Gift Atelier" — see docs/DESIGN_DIRECTION.md.
  */
 @theme {
-  /* Colour */
-  --color-paper: #ffffff;
-  --color-tissue: #f5eeec;
-  --color-tissue-deep: #ebe0dd;
-  --color-ink: #2a2226;
-  --color-ink-muted: #6e6266;
-  --color-line: #e6dcd9;
-  --color-line-strong: #cbbcb8;
-  --color-ribbon: #4b2142;
-  --color-ribbon-hover: #3a1833;
-  --color-ribbon-tint: #f3e8f0;
+  /* Colour — "Modern Gift Atelier" (V0.25, PROVISIONAL until final branding).
+     Plum is for actions and small emphasis only. Taupe is decorative (lines,
+     dots), never body text (contrast). */
+  --color-paper: #f7f3ed;        /* warm ivory page */
+  --color-surface: #fffdf9;      /* lifted sections, inputs, cards */
+  --color-tissue: #e9d9d4;       /* soft blush image wells */
+  --color-tissue-deep: #ddc9c2;
+  --color-ink: #252321;          /* charcoal */
+  --color-ink-muted: #6b625c;    /* 5.5:1 on ivory */
+  --color-line: #e4dad0;
+  --color-line-strong: #c9b9ab;
+  --color-taupe: #b79a7f;
+  --color-ribbon: #763f50;       /* deep plum */
+  --color-ribbon-hover: #61323f;
+  --color-ribbon-tint: #f2e5e8;
   --color-on-ribbon: #ffffff;
   --color-success: #2e6b47;
   --color-success-tint: #e7f1ea;
@@ -48,8 +51,8 @@
   --text-h2--line-height: 2.375rem;
   --text-h1: 2.25rem;
   --text-h1--line-height: 2.75rem;
-  --text-display: 2.75rem;
-  --text-display--line-height: 3.125rem;
+  --text-display: 3.75rem;
+  --text-display--line-height: 4.125rem;
 
   /* Radii — by hierarchy, not one radius everywhere */
   --radius-image: 4px;
@@ -118,12 +121,13 @@
 /* Responsive heading sizes (desktop steps up one notch). */
 @utility heading-display {
   font-family: var(--font-serif);
-  font-weight: 300;
-  font-size: var(--text-h1);
-  line-height: var(--text-h1--line-height);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-size: 2.5rem;
+  line-height: 1.08;
   @media (width >= 64rem) {
     font-size: var(--text-display);
-    line-height: var(--text-display--line-height);
+    line-height: 1.06;
   }
 }
 @utility heading-1 {
