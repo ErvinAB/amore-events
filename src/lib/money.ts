@@ -56,3 +56,11 @@ export function formatMoney(minor: number, { currency, locale }: { currency: str
 export function effectivePrice(p: { price_minor: number; sale_price_minor: number | null }): number {
   return p.sale_price_minor ?? p.price_minor;
 }
+
+/** "2024-06-14" → "14/06/2024" (en) or "14.06.2024" (mk, sq). Deterministic, no Intl. */
+export function formatDateValue(iso: string, locale: Locale): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return iso;
+  const sep = locale === "en" ? "/" : ".";
+  return `${m[3]}${sep}${m[2]}${sep}${m[1]}`;
+}

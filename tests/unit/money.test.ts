@@ -35,3 +35,12 @@ describe("effectivePrice()", () => {
     expect(effectivePrice({ price_minor: 2500, sale_price_minor: null })).toBe(2500);
   });
 });
+
+import { formatDateValue } from "@/lib/money";
+describe("formatDateValue()", () => {
+  it("formats personalisation dates per locale", () => {
+    expect(formatDateValue("2024-06-14", "en")).toBe("14/06/2024");
+    expect(formatDateValue("2024-06-14", "mk")).toBe("14.06.2024");
+    expect(formatDateValue("not a date", "sq")).toBe("not a date");
+  });
+});
