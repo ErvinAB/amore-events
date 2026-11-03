@@ -9,6 +9,7 @@ Next.js 16 (App Router, TypeScript strict, Turbopack) · Tailwind v4 · Supabase
 Use **npm 11+** (`npx npm@11 install` on older npm).
 - `npm run dev` · `npm run build` · `npm run lint` · `npm run typecheck`
 - `npm test` (vitest unit) · `npm run test:integration` (needs local Supabase) · `npm run db:test` (pgTAP) · `npm run db:advisors`
+- `npm run test:e2e` (Playwright against `next build && next start` on :3300; needs local Supabase + `npm run db:seed-dev`)
 - `npx supabase start` (Docker) · `npx supabase migration new <name>` · `npm run db:types`
 - Create an admin: `node --env-file=.env.local scripts/create-admin.mjs <email>`
 
@@ -32,7 +33,9 @@ Use **npm 11+** (`npx npm@11 install` on older npm).
 - `SUPABASE_SECRET_KEY` lives only in `src/lib/supabase/admin.ts` (imports `server-only`). Never prefix secrets with `NEXT_PUBLIC_`.
 - Every SQL function migration: `revoke execute … from public, anon, authenticated`, then grant only what's needed. `security definer` functions use `set search_path = ''` and fully qualified names. `place_order()` is EXECUTE for `service_role` only. The browser never calls it; the checkout Server Action does.
 - No public read of orders. `/order-success` shows only the sanitized confirmation from a signed cookie. No lookup by order number.
-- Owner notification email runs **after** the order commits and must never affect the order.
+- Owner notification runs via `after()` **after** the order commits (`src/lib/notifications/order-notifier.ts`) and must never affect the order.
+- Checkout path: `placeOrder` Server Action → `place_order()` RPC (service_role only). Never add another way to insert orders. Never read prices/totals from the client.
+- **Keep `partialPrefetching: false`** unless `tests/e2e/catalog-freshness.spec.ts` passes with it on (it served stale prices).
 - Validate every Server Action input with Zod. TypeScript types are not validation.
 - All schema/RLS/storage changes go through `supabase/migrations/`. No dashboard-only changes.
 

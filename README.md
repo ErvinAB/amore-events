@@ -32,6 +32,8 @@ npm run dev                  # http://localhost:3000 → redirects to /en
 | `npm run test:integration` | Storage policy tests (local Supabase) |
 | `npm run db:test` | Database RLS/constraint tests (pgTAP) |
 | `npm run db:advisors` | Supabase security/performance advisors |
+| `npm run db:seed-dev` | Local-only sample products + test users (refuses non-local URLs) |
+| `npm run test:e2e` | Playwright: production build, catalogue freshness, checkout + tampering |
 
 ## Database
 
@@ -41,7 +43,8 @@ Schema, RLS, grants and Storage policies live in `supabase/migrations/` and noth
 
 ```bash
 npx supabase start            # applies migrations; prints local URL + keys
-cp .env.example .env.local    # paste the local URL, publishable and secret keys
+cp .env.example .env.local    # paste the local URL, publishable and secret keys, set CHECKOUT_SECRET
+npm run db:seed-dev           # sample data (local only)
 npm run db:types              # regenerate TypeScript types after schema changes
 ```
 

@@ -1,6 +1,6 @@
 # Project Plan — Gift Store (working name, brand TBC)
 
-Status: **V0.1 approved. Pre-V0.2 stale-data fix done. V0.2 in progress.**
+Status: **V0.2 complete (2026-11-03), awaiting review. V0.3 not started.**
 Last updated: 2026-11-03
 
 ---
@@ -45,7 +45,7 @@ Notes: Not On The High Street and Mejuri were fetched directly. Monica Vinader r
 | D3 | Options with their own price or stock? | **Not sure yet.** Start without a variants table. `order_items.variant_label` exists so variants can be added later. |
 | D4 | Supabase setup | **Decided:** cloud project. Free tier for development. **Pro before real launch.** PITR is a paid add-on on top of Pro and is optional, not assumed. |
 | D4b | Admin panel language | **Decided:** Macedonian only for V0.1. All admin strings live in `src/messages/admin/mk.ts`, not inline, so more languages can be added later. Independent of the storefront default. |
-| D5 | **Do you phone customers to confirm COD orders?** | Open. Affects copy only. |
+| D5 | COD phone confirmation | **Decided:** possible but not guaranteed. Customer copy: "Your order has been received. We may contact you by phone to confirm your order or delivery details. Payment is made in cash upon delivery." (EN/MK/SQ). Admins move orders `new → confirmed`. |
 | D6 | New-order notification | **Decided:** email to owners in **V0.2**, sent only after the order commits (§8). Provider chosen when V0.2 starts. |
 | D8 | Product photography | Temporary images until real photos exist. The storefront visual design is **not final** until real photography is in. Layouts must not be tuned to placeholder images. |
 | D7 | Brand name, logo, colours, contact details, socials, delivery fee/areas, policies | All configurable placeholders until supplied. | Nothing |
@@ -325,7 +325,7 @@ npx skills add supabase/agent-skills --skill supabase-postgres-best-practices -a
 | Phase | Scope | Done when |
 |---|---|---|
 | **V0.1 Product system** | scaffold, tokens, Supabase clients, migrations + RLS + storage, admin auth, admin shell, categories CRUD, products CRUD + images + personalisation fields, shop/category/product pages, add to bag | an owner creates a product with photos and fields; a customer sees it, personalises it, and adds it to the bag |
-| **V0.2 Checkout** | cart page/drawer, `quoteCart`, checkout form + anti-abuse, `place_order`, success page, owner email after commit | full COD purchase works, totals come from the server, stock decrements |
+| **V0.2 Checkout** ✅ | cart page, `quoteCart`, checkout form + anti-abuse, `place_order`, success page, owner notification boundary (provider pending) | full COD purchase works, totals come from the server, stock decrements |
 | **V0.3 Operations** | orders list/detail, status and payment controls, `cancel_order`, dashboard counts | owners run fulfilment without opening Supabase |
 | **V0.4 Storefront polish** | homepage, nav, discovery rows, search (simple `ilike` is enough at this size), empty/error states, accessibility pass | screenshots reviewed at 390 and 1440 |
 | **V1 Hardening** | advisors, policy review, SEO (metadata, OG, JSON-LD Product, sitemap), legal placeholders, env validation, prod setup and backup docs, monitoring | launch checklist complete |
@@ -364,6 +364,48 @@ V0.1 increments (one commit each): ① scaffold + tokens + CLAUDE.md ② migrati
 - **Cache tag strategy:** one `catalog` tag on every storefront read, expired with `updateTag()` (read-your-writes, no stale-while-revalidate) by every admin catalogue mutation. With a small catalogue this invalidates every affected surface (product by slug, listings, categories, featured, new, home) with no risk of a missed per-product tag. Revisit per-product tags only if the catalogue grows enough for full invalidation to cost noticeable render time.
 - Macedonian/Albanian UI strings are **drafts and require native-speaker review**. This doesn't block engineering. English stays the default, required and fallback locale.
 - The admin dashboard has no order metrics until V0.3.
+
+## 13b. V0.2 progress log — Cart + COD checkout
+
+| Area | Status | Notes |
+|---|---|---|
+| Stale-data fix (pre-V0.2) | ✅ | Root cause `partialPrefetching`; see §13a. |
+| Orders schema | ✅ | Migration `20261103002150_orders_and_checkout.sql`. |
+| `place_order()` | ✅ | One transaction; details below. |
+| Cart | ✅ | Server quote (current price/stock/options), qty limited by stock, line problems block checkout, totals, free-delivery hint. |
+| Checkout | ✅ | Guest, mobile-first; summary first on mobile; fixed COD block (no selector). |
+| Anti-abuse | ✅ | Honeypot, field validation, signed form-timing token (≥3 s), per-IP attempt and order limits, per-phone limit, duplicate detection. |
+| Success page | ✅ | Signed httpOnly cookie with order number + total only. |
+| Owner notification | ✅ boundary / ⏳ provider | `after()` once the order is committed; `OrderNotifier` interface; default logs the order number only. `orders.owner_notified_at` is set only after a real send. |
+| Admin settings | ✅ | Delivery fee, free-delivery threshold, delivery text, contact details, socials. Currency is read-only. |
+| Localisation | ✅ | EN/MK/SQ for bag, checkout, errors, success. MK/SQ are drafts that need native review. |
+
+**Schema added:** enums `order_status`, `payment_status`, `payment_method`; `order_number_seq`; tables `orders`, `order_items` (immutable via trigger; `product_id` `ON DELETE RESTRICT`), `checkout_attempts`; functions `place_order`, `register_checkout_attempt`, `cancel_order`, `private.validated_personalization`.
+
+**`place_order()` (SECURITY INVOKER, EXECUTE → `service_role` only)**
+1. Shape checks. Only `product_id`, `quantity` (1–20) and `personalization` are read from each line; browser prices and names are ignored.
+2. Per-phone advisory lock, which serialises double-submits.
+3. Duplicate check: same phone + same cart fingerprint within 10 minutes returns the existing order (no new row, no stock change).
+4. Limits: 5 non-cancelled orders per phone per 24 h; 30 orders per IP-hash per hour.
+5. `SELECT … FOR UPDATE` on products **in id order**. Active + stock check uses quantities aggregated per product.
+6. Personalisation re-validated against current fields (required, length in characters, offered options, real dates, unknown keys rejected).
+7. Prices from the DB (sale price if set); delivery fee from `store_settings` (free above threshold).
+8. Order + item snapshots (name in all languages, slug, SKU, image path, unit price, quantity, labelled personalisation), stock decrement, `ORD-YYYY-NNNNNN` (Europe/Skopje year; sequence gaps are expected).
+
+**Inventory policy:** stock is reserved at order creation. `cancel_order()` is SECURITY DEFINER, admin/service-role only, and restores stock exactly once via `stock_restored_at` (tested). The admin cancel UI is V0.3.
+
+**Security decisions**
+- Browser → `placeOrder` Server Action (CSRF origin check by Next) → validation → throttle → re-quote → `place_order` via the server-only secret client. `anon`/`authenticated` have no EXECUTE on any order function and no table privileges on orders, items or attempts (tested via pgTAP + REST).
+- IPs are never stored; HMAC-SHA256 with `CHECKOUT_SECRET`, domain-separated from form tokens and confirmations.
+- **IP limits assume the host sets `X-Forwarded-For` (Vercel does).** On a host that passes a client-supplied header through, the IP limit can be bypassed; the per-phone limit and duplicate detection still apply.
+- Per-IP limits are deliberately high because MK mobile carriers use carrier-grade NAT. The per-phone limit is the real guard.
+- Honeypot hits get a generic error, never a fake order.
+
+**V0.2 known issues / follow-ups**
+- Email provider not chosen. Orders are safe in the DB, but owners are not notified yet (V0.3 dashboard will show new orders).
+- The delivery fee in local dev is a **placeholder** (150 MKD, free over 3,000 MKD), set by the dev seed only. Production starts at 0 until the owner sets it in /admin/settings.
+- Reserved stock for fake orders is released only when an admin cancels (V0.3 UI).
+- `/checkout`, `/cart` and `/order-success` inherit the home canonical; they are `noindex`, so this is harmless. Set explicit canonicals in the V1 SEO pass.
 
 ## 14. Risks and things deliberately NOT built
 
